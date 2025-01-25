@@ -36,6 +36,12 @@ carnivores_test = Carnivores(x_pos=800, y_pos=200)
 
 # Initalize menus
 menus = Menu_Handler((window_height * 0.9, window_width * 0.9))
+menu_holder = [
+    menus.main_menu,
+    menus.new_sim_menu,
+    menus.load_sim_menu
+    ]
+
 
 # setting bool value to start pygame window.
 pygame_active = True
@@ -47,17 +53,11 @@ while pygame_active:
         if event.type == pygame.QUIT:
             pygame_active = False
 
-    if menus.main_menu.is_enabled():
-        menus.main_menu.draw(window)
-        menus.main_menu.update(events)
-
-    if menus.new_sim_menu.is_enabled():
-        menus.new_sim_menu.draw(window)
-        menus.new_sim_menu.update(events)
-
-    if menus.load_sim_menu.is_enabled():
-        menus.load_sim_menu.draw(window)
-        menus.load_sim_menu.update(events)
+    for menu in menu_holder:
+        if menu.is_enabled:
+            menus.main_menu.draw(window)
+            menus.main_menu.update(events)
+            break
 
     pygame.display.update()
 
