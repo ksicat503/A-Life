@@ -55,8 +55,8 @@ while pygame_active:
 
     for menu in menu_holder:
         if menu.is_enabled:
-            menus.main_menu.draw(window)
-            menus.main_menu.update(events)
+            menu.draw(window)
+            menu.update(events)
             break
 
     pygame.display.update()
