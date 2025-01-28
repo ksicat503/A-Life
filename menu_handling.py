@@ -19,6 +19,20 @@ class Menu_Handler:
             self.menu_size[0], self.menu_size[1],
             theme=pygame_menu.themes.THEME_BLUE
             )
+        main_menu.add.label("Welcome to the A Life Challenge Simulator!")
+        main_menu.add.label("")
+        text = [
+            "Watch as virtual creatures evolve, adapt, and,",
+            "thrive in this dynamic world. Explore the",
+            "fascinating journey of digital organisms as",
+            "they interact and survive in an ever-changing",
+            "environment."
+        ]
+        for element in text:
+            main_menu.add.label(
+                element
+                )
+        main_menu.add.label("")
         main_menu.add.button(
             'New Simulation', self.display_new_sim_menu
             )
@@ -48,6 +62,10 @@ class Menu_Handler:
         new_sim_menu.add.button(
             'Start Simulation', self.start_new_sim
             )
+        new_sim_menu.add.button(
+            'Back', self.display_main_menu
+        )
+
         new_sim_menu.disable()
         return new_sim_menu
 
@@ -69,6 +87,9 @@ class Menu_Handler:
                 self.load_sim,
                 index
                 )
+        load_sim_menu.add.button(
+            'Back', self.display_main_menu
+        )
         load_sim_menu.disable()
         return load_sim_menu
 
@@ -77,6 +98,11 @@ class Menu_Handler:
         self.main_menu.disable()
         self.new_sim_menu.disable()
         self.load_sim_menu.disable()
+
+    def display_main_menu(self):
+        """ Hides all menus and then displays main menu """
+        self.disable_all_menus()
+        self.main_menu.enable()
 
     def display_new_sim_menu(self):
         """ Hides all menus and then displays new sim menu"""
