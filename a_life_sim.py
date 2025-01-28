@@ -42,9 +42,6 @@ all_organisms = [
 # Initalize menus
 menus = Menu_Handler((window_height * 0.9, window_width * 0.9))
 
-# Fast forward mulitplier
-speed = 1
-
 # setting bool value to start pygame window.
 pygame_active = True
 
@@ -106,4 +103,4 @@ while pygame_active:
 
             # Setting frame rate, lower setting seems to be easier to follow
             # Also if higher, the sim runs quickly due to energy consumption
-            clock.tick(30 * speed)
+            clock.tick(30)

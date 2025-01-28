@@ -48,6 +48,10 @@ class Menu_Handler:
         new_sim_menu.add.button(
             'Start Simulation', self.start_new_sim
             )
+        new_sim_menu.add.button(
+            'Back', self.display_main_menu
+        )
+
         new_sim_menu.disable()
         return new_sim_menu
 
@@ -69,6 +73,10 @@ class Menu_Handler:
                 self.load_sim,
                 index
                 )
+            
+        load_sim_menu.add.button(
+            'Back', self.display_main_menu
+        )
         load_sim_menu.disable()
         return load_sim_menu
 
@@ -77,6 +85,11 @@ class Menu_Handler:
         self.main_menu.disable()
         self.new_sim_menu.disable()
         self.load_sim_menu.disable()
+
+    def display_main_menu(self):
+        """ Hides all menus and then displays main menu """
+        self.disable_all_menus()
+        self.main_menu.enable()
 
     def display_new_sim_menu(self):
         """ Hides all menus and then displays new sim menu"""
