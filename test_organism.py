@@ -41,7 +41,7 @@ class Organism:
         # move beyond the boundaries of the screen
         self.x_pos = max(0, min(width, self.x_pos))
         self.y_pos = max(0, min(height, self.y_pos))
-    
+
     def mutation(self):
         """
         Cause a random mutation in organism. 
@@ -61,4 +61,3 @@ class Organism:
         if random.random() < mutation_chance:
             self.speed += random.randint(-2, 2)
             self.speed = max(1, self.speed)
-
