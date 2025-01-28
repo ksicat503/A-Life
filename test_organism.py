@@ -42,7 +42,6 @@ class Organism:
         self.x_pos = max(0, min(width, self.x_pos))
         self.y_pos = max(0, min(height, self.y_pos))
 
-
     def mutation(self):
         """
         Cause a random mutation in organism. 
