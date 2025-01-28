@@ -63,4 +63,3 @@ class Organism:
         if random.random() < mutation_chance:
             self.speed += random.randint(-2, 2)
             self.speed = max(1, self.speed)
-

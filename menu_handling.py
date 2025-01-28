@@ -73,7 +73,6 @@ class Menu_Handler:
                 self.load_sim,
                 index
                 )
-            
         load_sim_menu.add.button(
             'Back', self.display_main_menu
         )
