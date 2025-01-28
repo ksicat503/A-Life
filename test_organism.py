@@ -41,3 +41,23 @@ class Organism:
         # move beyond the boundaries of the screen
         self.x_pos = max(0, min(width, self.x_pos))
         self.y_pos = max(0, min(height, self.y_pos))
+
+    def mutation(self):
+        """
+        Cause a random mutation in organism.
+        Mutation can randomly affect organism traits
+        *Decide what traits/numbers we want to use
+        """
+        mutation_chance = 0.1
+
+        if random.random() < mutation_chance:
+            self.offspring_chance += random.randint(-0.05, 0.05)
+            self.offspring_chance = max(0.0, self.offspring_chance)
+
+        if random.random() < mutation_chance:
+            self.life_expectancy += random.randint(-3, 3)
+            self.life_expectancy = max(1, self.life_expectancy)
+
+        if random.random() < mutation_chance:
+            self.speed += random.randint(-2, 2)
+            self.speed = max(1, self.speed)
