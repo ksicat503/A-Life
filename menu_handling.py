@@ -19,6 +19,20 @@ class Menu_Handler:
             self.menu_size[0], self.menu_size[1],
             theme=pygame_menu.themes.THEME_BLUE
             )
+        main_menu.add.label("Welcome to the A Life Challenge Simulator!")
+        main_menu.add.label("")
+        text = [
+            "Watch as virtual creatures evolve, adapt, and,",
+            "thrive in this dynamic world. Explore the",
+            "fascinating journey of digital organisms as",
+            "they interact and survive in an ever-changing",
+            "environment."
+        ]
+        for element in text:
+            main_menu.add.label(
+                element
+                )
+        main_menu.add.label("")
         main_menu.add.button(
             'New Simulation', self.display_new_sim_menu
             )
