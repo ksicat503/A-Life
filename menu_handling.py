@@ -1,4 +1,5 @@
 import pygame_menu
+import json_writer
 
 
 class Menu_Handler:
@@ -75,7 +76,9 @@ class Menu_Handler:
         Still need to implement reading json files to get sim loads.
         """
         # Will need to read json file to get saved sims
-        sim_loads = ['Saved sim 1', 'Saved sim 2', 'Saved sim 3']
+        sim_loads = json_writer.json_reader("sim.json")
+        if not sim_loads:
+            sim_loads = ['Saved sim 1', 'Saved sim 2', 'Saved sim 3']
         load_sim_menu = pygame_menu.Menu(
             'Load Simulation',
             self.menu_size[0], self.menu_size[1],
