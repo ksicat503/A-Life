@@ -1,5 +1,7 @@
 import pygame
 import random
+# import numpy as np
+# import json
 from test_organism import Organism
 from carnivores import Carnivores
 from herbivores import Herbivores

@@ -1,4 +1,11 @@
-import pygame_menu
+"""
+SOURCES
+Background Image: Generated using Gemini 2.0
+"""
+
+
+import pygame
+from menu_assets import Button, Text
 
 
 class Menu_Handler:
@@ -73,30 +80,11 @@ class Menu_Handler:
             .convert_alpha(),
             0.7
         )
-
-        new_sim_menu.disable()
-        return new_sim_menu
-
-    def build_load_sim_menu(self):
-        """
-        Builds load sim menu UI
-        Still need to implement reading json files to get sim loads.
-        """
-        # Will need to read json file to get saved sims
-        sim_loads = ['Saved sim 1', 'Saved sim 2', 'Saved sim 3']
-        load_sim_menu = pygame_menu.Menu(
-            'Load Simulation',
-            self.menu_size[0], self.menu_size[1],
-            theme=pygame_menu.themes.THEME_BLUE
-            )
-        for index in range(0, len(sim_loads)):
-            load_sim_menu.add.button(
-                "Name: {}".format(sim_loads[index]),
-                self.load_sim,
-                index
-                )
-        load_sim_menu.add.button(
-            'Back', self.display_main_menu
+        # Back button for both new and load sim menu
+        self.back_button = Button(
+            self.screen_size[0] // 2, 650,
+            pygame.image.load('./assets/back_button.png').convert_alpha(),
+            0.7
         )
 
     def display_menu(self):
