@@ -13,8 +13,8 @@ pygame.init()
 pygame.font.init()
 
 # defining the size of the window
-window_height = 1000
-window_width = 1000
+window_height = 800
+window_width = 800
 
 # This is needed to clear the screen during sim,
 # as fill function needs the variable
@@ -40,28 +40,22 @@ all_organisms = [
 
 
 # Initalize menus
-menus = Menu_Handler((window_height * 0.9, window_width * 0.9))
+menus = Menu_Handler((window_height, window_width), window)
 
 # setting bool value to start pygame window.
 pygame_active = True
 
 while pygame_active:
-    window.fill(black)
+    # Displays the current menu
+    menus.display_menu()
+    if menus.exit:
+        pygame_active = False
+
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.QUIT:
             pygame_active = False
             org_json_writer(all_organisms, 'organism.json')
-
-    if menus.main_menu.is_enabled():
-        menus.main_menu.draw(window)
-        menus.main_menu.update(events)
-    elif menus.new_sim_menu.is_enabled():
-        menus.new_sim_menu.draw(window)
-        menus.new_sim_menu.update(events)
-    elif menus.load_sim_menu.is_enabled():
-        menus.load_sim_menu.draw(window)
-        menus.load_sim_menu.update(events)
 
     pygame.display.update()
 
@@ -107,4 +101,4 @@ while pygame_active:
 
             # Setting frame rate, lower setting seems to be easier to follow
             # Also if higher, the sim runs quickly due to energy consumption
-            clock.tick(30)
+            clock.tick(60)
