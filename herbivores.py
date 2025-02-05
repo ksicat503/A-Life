@@ -26,11 +26,11 @@ class Herbivores(Organisms):
         if not self.is_alive:
             return
 
-        if (self.age > self.maturation_age and 
+        if (self.age > self.maturation_age and
             self.offspring_chance > random.random()):
-                new_x_pos = self.x_pos + self.org_width
-                if new_x_pos > self.window_w:
-                    new_x_pos = self.x_pos - self.org_width
-                # TO-DO: if new organism instance location is already occupied,
-                # return without reproducing
-                Herbivores(new_x_pos, self.y_pos)
+            new_x_pos = self.x_pos + self.org_width
+            if new_x_pos > self.window_w:
+                new_x_pos = self.x_pos - self.org_width
+            # TO-DO: if new organism instance location is already occupied,
+            # return without reproducing
+            Herbivores(new_x_pos, self.y_pos)
