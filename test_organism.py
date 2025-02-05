@@ -12,6 +12,8 @@ class Organism:
         # all values below should be adjusted post test simulations
         self.x_pos = x_pos
         self.y_pos = y_pos
+        self.org_height = 50
+        self.org_width = 50
         self.window_h = window_h
         self.window_w = window_w
         self.age = 0
@@ -28,8 +30,9 @@ class Organism:
     # Using rectangle, but can update for a different shape or icon
     def insert_organism(self, window):
         """Function to insert organism with defined size, and grid position"""
-        pygame.draw.rect(window, (255, 255, 255), (self.x_pos, self.y_pos, 50,
-                                                   50))
+        pygame.draw.rect(window, (255, 255, 255), (self.x_pos, self.y_pos,
+                                                   self.org_height,
+                                                   self.org_width))
 
     def move(self):
         """Finding random values for x and y values.
@@ -41,8 +44,8 @@ class Organism:
 
         # Code to ensure the organism does not
         # move beyond the boundaries of the screen
-        self.x_pos = max(0, min(self.window_w, self.x_pos))
-        self.y_pos = max(0, min(self.window_h, self.y_pos))
+        self.x_pos = max(0, min(self.window_w - self.org_width, self.x_pos))
+        self.y_pos = max(0, min(self.window_h - self.org_height, self.y_pos))
 
     def mutation(self):
         """

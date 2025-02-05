@@ -1,11 +1,13 @@
 import pygame
-# import random
+import random
 # import numpy as np
 # import json
 from test_organism import Organism
 from carnivores import Carnivores
 from herbivores import Herbivores
 from menu_handling import Menu_Handler
+from json_writer import org_json_writer, sim_json_writer
+
 
 # initializing imported module
 # This initializes pygame and fonts to display text
@@ -55,6 +57,7 @@ while pygame_active:
     for event in events:
         if event.type == pygame.QUIT:
             pygame_active = False
+            org_json_writer(all_organisms, 'organism.json')
 
     pygame.display.update()
 
@@ -70,6 +73,9 @@ while pygame_active:
                 if event.type == pygame.QUIT:
                     sim_running = False
                     pygame_active = False
+                    org_json_writer(all_organisms, 'organism.json')
+                    sim_json_writer(f"Tester:{random.randint(0, 100)}",
+                                    "sim.json")
 
             # Move all the organisms
             for organism in all_organisms:
