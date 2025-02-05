@@ -5,6 +5,7 @@ Background Image: Generated using Gemini 2.0
 
 
 import pygame
+import os
 from menu_assets import Button, Text, Toggle
 
 
@@ -16,8 +17,11 @@ class Menu_Handler:
         self.window = window
         self.current_menu = 'main'
         self.sim_active = False
+        self.load_game = False
+        self.game_id = None
         self.paused = False
         self.exit = False
+        self.save_game = False
         self.novel_feature = True
         self.speed = 1
         self.scaled_background = pygame.transform.scale(
@@ -129,8 +133,10 @@ class Menu_Handler:
 
         # Draws buttons and checks to see if they are clicked
         if self.new_sim_button.draw(self.window):
+            pygame.time.wait(250)
             self.current_menu = 'new_sim'
         if self.load_sim_button.draw(self.window):
+            pygame.time.wait(250)
             self.current_menu = 'load_sim'
         if self.exit_button.draw(self.window):
             self.exit = True
@@ -149,31 +155,47 @@ class Menu_Handler:
         if self.on_off_button.draw(self.window):
             self.novel_feature = not self.novel_feature
         if self.start_button.draw(self.window):
+
+            self.game_id = 0 if not os.path.isdir('./saves') \
+                else len(os.listdir('./saves'))
             self.sim_active = True
         if self.back_button.draw(self.window):
+            pygame.time.wait(100)
             self.current_menu = 'main'
 
     def draw_load_sim_menu(self):
         """ Displays the load sim menu """
         self.window.blit(self.scaled_background, (0, 0))
-        self.main_title.draw(self.window, "Load Simulation")
+        self.main_title.draw(self.window, "Recent Saves")
 
-        # Draws buttons and checks to see if they are clicked
-        if self.sim_1_button.draw(self.window):
-            pass
-        if self.sim_2_button.draw(self.window):
-            pass
-        if self.sim_3_button.draw(self.window):
-            pass
+        # Displays all buttons
+        # Gets all saved files displays the three most recent saved files
+        saves = [] if not os.path.isdir('./saves') else os.listdir('./saves')
+        if len(saves) >= 1:
+            if self.sim_1_button.draw(self.window):
+                self.game_id = int(saves[max(0, len(saves)-3)][3:])
+                self.sim_active = True
+        if len(saves) >= 2:
+            if self.sim_2_button.draw(self.window):
+                self.game_id = int(saves[max(1, len(saves)-2)][3:])
+                self.sim_active = True
+        if len(saves) >= 3:
+            if self.sim_3_button.draw(self.window):
+                self.game_id = int(saves[max(2, len(saves)-1)][3:])
+                self.sim_active = True
+
         if self.back_button.draw(self.window):
+            pygame.time.wait(100)
             self.current_menu = 'main'
 
     def draw_pause_menu(self):
+        """Displays the pause menu """
         self.window.blit(self.scaled_background, (0, 0))
 
         self.main_title.draw(self.window, "Paused")
         self.speed_text.draw(self.window, "Speed")
 
+        # Displays all the buttons
         if self.resume_button.draw(self.window):
             self.paused = False
         if self.speed_button.draw(self.window):
@@ -183,14 +205,10 @@ class Menu_Handler:
                 self.speed = 2
             else:
                 self.speed = 4
-
         if self.save_button.draw(self.window):
-            pass
+            self.save_game = True
         if self.quit_button.draw(self.window):
             self.sim_active = False
             self.paused = False
             self.speed = 1
             self.current_menu = 'main'
-
-
-

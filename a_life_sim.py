@@ -1,13 +1,12 @@
 import pygame
-import random
+import os
 # import numpy as np
 # import json
 from test_organism import Organism
 from carnivores import Carnivores
 from herbivores import Herbivores
 from menu_handling import Menu_Handler
-from json_writer import org_json_writer, sim_json_writer
-
+from json_writer import org_json_writer, json_reader  # , sim_json_writer
 
 # initializing imported module
 # This initializes pygame and fonts to display text
@@ -30,17 +29,6 @@ pygame.display.set_caption('Artifical Life Sim')
 # clock to set frame rate in simulation
 clock = pygame.time.Clock()
 
-# Creating a set organism for testing.
-# Can add a function to create mulitple later
-all_organisms = [
-    Organism(x_pos=200, y_pos=200,
-             window_h=window_height, window_w=window_width
-             ),
-    Herbivores(x_pos=300, y_pos=500),
-    Carnivores(x_pos=800, y_pos=200)
-]
-
-
 # Initalize menus
 menus = Menu_Handler((window_height, window_width), window)
 
@@ -57,9 +45,28 @@ while pygame_active:
     for event in events:
         if event.type == pygame.QUIT:
             pygame_active = False
-            org_json_writer(all_organisms, 'organism.json')
 
     pygame.display.update()
+
+    if menus.sim_active:
+        if menus.load_game is False:
+            # Will need to update this later
+            all_organisms = [
+                Organism(x_pos=200, y_pos=200,
+                         window_h=window_height, window_w=window_width
+                         ),
+                Herbivores(x_pos=300, y_pos=500),
+                Carnivores(x_pos=800, y_pos=200)
+                ]
+        else:
+            organism_data = json_reader(f"./saves/id_{menus.game_id}")
+            all_organisms = []
+            for organism in organism_data:
+                # will need to update. Right now I will assume
+                # they are all herbivores.
+                all_organisms.append(
+                    Herbivores(organism_data['x_pos'], organism_data['y_pos'])
+                    )
 
     while menus.sim_active:
         # Set up event for when the user quits out of the screen
@@ -72,9 +79,19 @@ while pygame_active:
             if event.type == pygame.QUIT:
                 menus.sim_active = False
                 pygame_active = False
-                org_json_writer(all_organisms, 'organism.json')
-                sim_json_writer(f"Tester:{random.randint(0, 100)}",
-                                "sim.json")
+
+        # Checks if game needs to be saved.
+        if menus.save_game:
+            # Make folder for new game save if it doesn't exist
+            if not os.path.exists('./saves'):
+                os.makedirs('./saves')
+            if not os.path.exists(f'./saves/id_{menus.game_id}'):
+                os.makedirs(f'./saves/id_{menus.game_id}')
+            # Save organism data
+            org_json_writer(all_organisms,
+                            f'./saves/id_{menus.game_id}/organism.json')
+            menus.save_game = False
+
         if menus.paused:
             menus.draw_pause_menu()
         else:

@@ -22,12 +22,12 @@ class Button():
             if pygame.mouse.get_pressed()[0] and self.clicked is False:
                 self.clicked = True
                 action = True
+
         # Reset button
         if pygame.mouse.get_pressed()[0] is False:
             self.clicked = False
 
         window.blit(self.image, self.rect)
-
         return action
 
 
@@ -57,14 +57,14 @@ class Toggle():
         self.rect.center = (x, y)
         self.scale = scale
         self.clicked = False
-        self.frameCount = 0
+        self.frame_count = 0
         self.current_index = 0
 
     def reset_button(self):
         """
         Resets variable that prevents one click being registered multiple times
         """
-        self.frameCount = 0
+        self.frame_count = 0
 
     def draw(self, window):
         """Draws button on the screen and returns if it is clicked"""
@@ -74,8 +74,7 @@ class Toggle():
         # Checks if button is clicked
         if self.rect.collidepoint(mouse_pos):
             if pygame.mouse.get_pressed()[0] and self.clicked is False \
-             and self.frameCount > 5:
-                print('test2')
+             and self.frame_count > 5:
                 self.clicked = True
                 action = True
                 self.current_index = self.current_index + 1 \
@@ -86,5 +85,5 @@ class Toggle():
             self.clicked = False
 
         window.blit(self.images[self.current_index], self.rect)
-        self.frameCount += 1
+        self.frame_count += 1
         return action
