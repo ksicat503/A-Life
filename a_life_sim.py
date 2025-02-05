@@ -61,22 +61,23 @@ while pygame_active:
 
     pygame.display.update()
 
-    if menus.sim_active:
-        # Set variable to start simulation
-        sim_running = True
-        # keep game running till running is false
-        while sim_running:
-            # Set up event for when the user quits out of the screen
-            for event in pygame.event.get():
-                # if event is of type quit then
-                # set running bool to false
-                if event.type == pygame.QUIT:
-                    sim_running = False
-                    pygame_active = False
-                    org_json_writer(all_organisms, 'organism.json')
-                    sim_json_writer(f"Tester:{random.randint(0, 100)}",
-                                    "sim.json")
-
+    while menus.sim_active:
+        # Set up event for when the user quits out of the screen
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    menus.paused = True
+            # if event is of type quit then
+            # set running bool to false
+            if event.type == pygame.QUIT:
+                menus.sim_active = False
+                pygame_active = False
+                org_json_writer(all_organisms, 'organism.json')
+                sim_json_writer(f"Tester:{random.randint(0, 100)}",
+                                "sim.json")
+        if menus.paused:
+            menus.draw_pause_menu()
+        else:
             # Move all the organisms
             for organism in all_organisms:
                 organism.move()
@@ -89,18 +90,18 @@ while pygame_active:
             for organism in all_organisms:
                 organism.insert_organism(window)
 
-            # update the display for the new movement
-            pygame.display.update()
+        # update the display for the new movement
+        pygame.display.update()
 
-            # # print to show energy is decreasing with movement
-            # print(organism_test.energy)
+        # # print to show energy is decreasing with movement
+        # print(organism_test.energy)
 
-            # # Added some code to stop the sim when the organism runs out of
-            # energy
-            # # Take this out to run continuously
-            # if organism_test.energy == 0:
-            #     sim_running = False
+        # # Added some code to stop the sim when the organism runs out of
+        # energy
+        # # Take this out to run continuously
+        # if organism_test.energy == 0:
+        #     sim_running = False
 
-            # Setting frame rate, lower setting seems to be easier to follow
-            # Also if higher, the sim runs quickly due to energy consumption
-            clock.tick(60)
+        # Setting frame rate, lower setting seems to be easier to follow
+        # Also if higher, the sim runs quickly due to energy consumption
+        clock.tick(30*menus.speed)

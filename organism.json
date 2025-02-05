@@ -1,14 +1,14 @@
 [
     {
-        "x_pos": 441,
-        "y_pos": 179,
+        "x_pos": 332,
+        "y_pos": 284,
         "org_height": 50,
         "org_width": 50,
         "window_h": 800,
         "window_w": 800,
         "age": 0,
         "days_since_fed": 0,
-        "energy_level": -84,
+        "energy_level": -69,
         "life_expectancy": 10,
         "offspring_chance": 0.1,
         "can_reproduce": false,
@@ -16,8 +16,8 @@
         "speed": 20
     },
     {
-        "x_pos": 291,
-        "y_pos": 502,
+        "x_pos": 302,
+        "y_pos": 501,
         "age": 0,
         "days_since_fed": 0,
         "energy_level": 5,
@@ -27,8 +27,8 @@
         "is_alive": true
     },
     {
-        "x_pos": 881,
-        "y_pos": 247,
+        "x_pos": 957,
+        "y_pos": 176,
         "age": 0,
         "days_since_fed": 0,
         "energy_level": 3,
