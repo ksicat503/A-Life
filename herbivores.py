@@ -27,7 +27,7 @@ class Herbivores(Organisms):
             return
 
         if (self.age > self.maturation_age and
-            self.offspring_chance > random.random()):
+                self.offspring_chance > random.random()):
             new_x_pos = self.x_pos + self.org_width
             if new_x_pos > self.window_w:
                 new_x_pos = self.x_pos - self.org_width

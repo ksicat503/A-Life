@@ -2,7 +2,7 @@ import random
 import pygame
 
 
-class Organism:
+class Organisms:
     def __init__(self, x_pos, y_pos, window_h, window_w):
         # all values below should be adjusted post test simulations
         self.x_pos = x_pos
