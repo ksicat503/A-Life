@@ -3,8 +3,8 @@ from organisms import Organisms
 
 
 class Herbivores(Organisms):
-    def __init__(self, x_pos, y_pos):
-        super().__init__(x_pos, y_pos)
+    def __init__(self, x_pos, y_pos, window_h, window_w):
+        super().__init__(x_pos, y_pos, window_h, window_w)
         self.maturation_age = 10
         self.offspring_chance = 0.05
 
