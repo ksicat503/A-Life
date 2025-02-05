@@ -20,15 +20,15 @@ class Carnivores(Organisms):
 
     def reproduce(self):
         """Random chance of offspring reproduction.
-        
+
         If Carnivore age is higher than maturation_age, create a new instance
         of Carnivore object next to it.
         """
         if not self.is_alive:
             return
 
-        if self.age > self.maturation_age and \
-            self.offspring_chance > random.random():
+        if (self.age > self.maturation_age and
+            self.offspring_chance > random.random()):
                 new_x_pos = self.x_pos + self.org_width
                 if new_x_pos > self.window_w:
                     new_x_pos = self.x_pos - self.org_width

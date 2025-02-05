@@ -1,6 +1,7 @@
 import random
 import pygame
 
+
 class Organism:
     def __init__(self, x_pos, y_pos, window_h, window_w):
         # all values below should be adjusted post test simulations
@@ -59,11 +60,11 @@ class Organism:
             if either values are below a random float between 0 and 1, set
             self.is_alive to False
         """
-        chance_by_age = (self.life_expectancy - self.age) \
-            / self.life_expectancy
+        chance_by_age = ((self.life_expectancy - self.age) /
+                          self.life_expectancy)
 
-        chance_by_energy = (self.energy_level - self.days_since_fed) \
-            / self.energy_level
+        chance_by_energy = ((self.energy_level - self.days_since_fed) /
+                             self.energy_level)
 
         if chance_by_energy or chance_by_age < random.random():
             self.is_alive = False
