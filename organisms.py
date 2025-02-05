@@ -45,12 +45,12 @@ class Organism:
 
     def survival_chance(self):
         """Random survival chance. *** ADD DISASTER-SURVIVAL CHANCE HERE???***
-        
+
         Age of the organism is incremented, then calculates survival
             chance by:
 
             (life expectancy - current age) / (life expectancy)
-            
+
         Days since last feeding day is incremented, then calculates survival
             chance by:
 
@@ -61,13 +61,13 @@ class Organism:
         """
         chance_by_age = (self.life_expectancy - self.age) \
             / self.life_expectancy
-        
+
         chance_by_energy = (self.energy_level - self.days_since_fed) \
             / self.energy_level
 
         if chance_by_energy or chance_by_age < random.random():
             self.is_alive = False
-        
+
         '''
         *** (POTENTIALLY) IMPLEMENT DISASTER PARAMETERS HERE,
         IMPORT DISASTER PAREMETERS FROM 'ENVIRONMENT' CLASS? ***
