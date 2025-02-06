@@ -55,8 +55,10 @@ while pygame_active:
                 Organism(x_pos=200, y_pos=200,
                          window_h=window_height, window_w=window_width
                          ),
-                Herbivores(x_pos=300, y_pos=500),
-                Carnivores(x_pos=800, y_pos=200)
+                Herbivores(x_pos=300, y_pos=500,
+                           window_h=window_height, window_w=window_width),
+                Carnivores(x_pos=800, y_pos=200, window_h=window_height,
+                           window_w=window_width)
                 ]
         else:
             organism_data = json_reader(f"./saves/id_{menus.game_id}")

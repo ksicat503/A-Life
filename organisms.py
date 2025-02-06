@@ -17,6 +17,7 @@ class Organisms:
         self.life_expectancy = 50
         self.is_alive = True
         self.speed = 20
+        self.animal_type = 0
 
     def __del__(self):
         return

@@ -7,6 +7,7 @@ class Herbivores(Organisms):
         super().__init__(x_pos, y_pos, window_h, window_w)
         self.maturation_age = 10
         self.offspring_chance = 0.05
+        self.animal_type = 1
 
     def move(self):
         """Herbivores-speicifc movement features.

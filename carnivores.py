@@ -7,6 +7,7 @@ class Carnivores(Organisms):
         super().__init__(x_pos, y_pos, window_h, window_w)
         self.maturation_age = 10
         self.offspring_chance = 0.05
+        self.animal_type = 2
 
     def move(self):
         """Carnivores-speicifc movement features.
