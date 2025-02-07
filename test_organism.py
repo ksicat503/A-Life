@@ -44,8 +44,8 @@ class Organism:
 
     def mutation(self):
         """
-        Cause a random mutation in organism. 
-        Mutation can randomly affect organism traits 
+        Cause a random mutation in organism.
+        Mutation can randomly affect organism traits
         *Decide what traits/numbers we want to use
         """
         mutation_chance = 0.1
