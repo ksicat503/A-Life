@@ -27,6 +27,7 @@ class Organism:
             self.can_reproduce = True
         self.is_alive = True
         self.speed = 2
+        self.animal_type = 0
 
     # Using rectangle, but can update for a different shape or icon
     def insert_organism(self, window):

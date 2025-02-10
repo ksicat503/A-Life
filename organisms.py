@@ -19,7 +19,6 @@ class Organisms:
         self.is_alive = True
         self.speed = speed
         self.animal_type = animal_type
-        self.colors = [(51, 255, 51), (204, 0, 0)]
 
     def __del__(self):
         return
@@ -27,8 +26,9 @@ class Organisms:
     # Using rectangle, but can update for a different shape or icon
     def insert_organism(self, window):
         """Function to insert organism with defined size, and grid position"""
+        colors = [(51, 255, 51), (204, 0, 0)]
         pygame.draw.rect(window,
-                         self.colors[self.animal_type-1],
+                         colors[self.animal_type-1],
                          (self.x_pos, self.y_pos,
                           self.org_height, self.org_width))
 
