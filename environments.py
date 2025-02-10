@@ -3,6 +3,17 @@ import random
 
 
 class Environment:
+    """
+    Represents an Environment. Should be able to take a square in the sim board
+
+    Attributes:
+        name: name of the terrain/environment type
+        base_temp: the starting temp of the environment
+        weather_options: list of possible weather types present in environment
+        weather_freq: list of weighted frequencies for weather_options
+        possible_disasters: list of disasters allowed in environment
+        starting_resources: starting amount of resources, number between 0 to 1
+    """
     def __init__(
             self,
             name,
@@ -30,27 +41,37 @@ class Environment:
         self.weather = "clear"
 
     def get_weather(self):
+        """Returns weather"""
         return self.weather
 
     def get_temperature(self):
+        """Returns temperature"""
         return self.temperature
 
     def get_total_resources(self):
+        """Returns resource amount"""
         return self.total_resources
 
     def get_terrain(self):
+        """Returns terrain"""
         return self.terrain
 
-    def randomize_weather(self, we):
+    def randomize_weather(self):
+        """
+        Creates a random weather event based on possible weather options
+        and weighted frequencies per event.
+        """
         self.weather = random.choices(
             self.weather_options,
             weights=self.weather_freq,
             k=1)[0]
 
     def set_temperature(self, temp):
+        """Hard sets temperature"""
         self.temperature = temp
 
     def use_resources(self, amt):
+        """Uses resources. Makes sure the total amount doesnt go below zero"""
         self.total_resources -= amt
         self.total_resources = max(0, self.total_resources - amt)
 
@@ -69,7 +90,8 @@ class Environment:
             print(f"Disaster occured: {self.disaster_present}")
 
     def end_disaster(self):
-        if not self.disaster_present:
+        """Ends current disaster if one is present"""
+        if self.disaster_present:
             prev_disaster = self.disaster_present
             self.disaster_present = None
             print(f"{prev_disaster} has ended.")
@@ -78,6 +100,7 @@ class Environment:
 
 
 class Grassland(Environment):
+    """Represents a Grassland environment, inherits from Environment."""
     def __init__(self):
         super().__init__(
             "Grassland",
@@ -89,6 +112,7 @@ class Grassland(Environment):
 
 
 class Forest(Environment):
+    """Represents a Forest environment, inherits from Environment."""
     def __init__(self):
         super().__init__(
             "Forest",
@@ -99,11 +123,16 @@ class Forest(Environment):
         )
 
     def regenerate_resources(self):
+        """
+        Allows regeneration of some resources, 
+        randomized between .001 and .005
+        """
         # Forests can slowly regenerate resources (trees)
         self.total_resources += random.uniform(0.001, 0.005)
 
 
 class Desert(Environment):
+    """Represents a Desert environment, inherits from Environment."""
     def __init__(self):
         super().__init__(
             "Desert",
@@ -115,6 +144,7 @@ class Desert(Environment):
 
 
 class Ocean(Environment):
+    """Represents an Ocean environment, inherits from Environment."""
     # Can edit the weather options in the future
     def __init__(self):
         super().__init__(
@@ -127,6 +157,7 @@ class Ocean(Environment):
 
 
 class Tundra(Environment):
+    """Represents a Tundra environment, inherits from Environment."""
     def __init__(self):
         super().__init__(
             "Tundra",
@@ -138,6 +169,7 @@ class Tundra(Environment):
 
 
 class Swamp(Environment):
+    """Represents a Swamp environment, inherits from Environment."""
     def __init__(self):
         super().__init__(
             "Swamp",
