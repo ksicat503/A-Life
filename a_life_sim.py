@@ -33,10 +33,10 @@ clock = pygame.time.Clock()
 # List of terrain types
 terrain_classes = [Grassland, Forest, Desert, Ocean, Tundra, Swamp]
 # Set organism size
-X_PX_SIZE = 50
-Y_PX_SIZE = 50
+X_PX_SIZE = 20
+Y_PX_SIZE = 20
 # Setting size of the tiles organisms can move on. Same Size as organism
-grid_size = 50
+grid_size = 20
 # Setting how many rows and columns
 rows = window_height // grid_size
 cols = window_width // grid_size
