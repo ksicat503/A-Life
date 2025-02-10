@@ -2,7 +2,7 @@ import random
 
 
 class Disaster():
-    """Parent class for all disasters."""
+    """Represents a Disaster"""
     def __init__(self, name, duration):
         self.name = name
         self.duration = (duration
@@ -11,11 +11,15 @@ class Disaster():
                          )
 
     def apply_effect(self, environment):
-        """Disaster subclasses will take care of logic"""
+        """Disaster child classes will take care of logic"""
         raise NotImplementedError("Each disaster"
                                   "must implement its own effects.")
 
     def end_effect(self, environment):
+        """
+        Ends effects of a disaster if any are present.
+        Will be handled by child class
+        """
         pass
 
     def __str__(self):
@@ -23,7 +27,7 @@ class Disaster():
 
 
 class Drought(Disaster):
-    """Reduces resource, raises temperature"""
+    """Represents a Drought disaster, inherits from Disaster"""
     def __init__(self):
         super().__init__("Drought")
 
@@ -33,40 +37,50 @@ class Drought(Disaster):
 
 
 class Flood(Disaster):
-    """Reduce resource, slightly lower temperate.
-    ***DISCUSS: kill off some of population?"""
+    """Represents a Flood disaster, inherits from Disaster"""
     def __init__(self):
         super().__init__("Flood")
 
     def apply_effect(self, environment):
+        """
+        reduces resource and lowers temperature
+        ***DISCUSS: kill of some of population?
+        """
         environment.temperature -= random.randint(3, 5)
         environment.total_resources -= random.uniform(0.1, 0.15)
 
 
 class Earthquake(Disaster):
-    """Small reduction of resources
-    ***DISCUSS: kill off some of population?"""
+    """Represents a Earthquake disaster, inherits from Disaster"""
     def __init__(self):
         super().__init__("Earthquake")
 
     def apply_effect(self, environment):
+        """Reduces resources."""
+
         environment.total_resources -= random.uniform(0.03, 0.07)
 
 
 class Wildfire(Disaster):
-    """Increase in temp, loss of resource
-    ***this definetly kills off some of the population. will implement later"""
+    """Represents a Wildfire disaster, inherits from Disaster"""
+
     def __init__(self):
         super().__init__("Wildfire")
 
     def apply_effect(self, environment):
-        environment.temperate += random.randint(5, 7)
+        """
+        Increases temperature and loses some resources.
+        ***DISCUSS: This should kill some of the population?
+        """
+        environment.temperature += random.randint(5, 7)
         environment.total_resources -= random.uniform(0.1, 0.3)
 
 
 class Sandstorm(Disaster):
+    """Represents a Wildfire disaster, inherits from Disaster"""
     def __init__(self):
         super().__init__("Sandstorm")
 
     def apply_effect(self, environment):
+        """Increases temperature slightly"""
         environment.temperature += random.randint(5, 7)
