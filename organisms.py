@@ -3,12 +3,13 @@ import pygame
 
 
 class Organisms:
-    def __init__(self, x_pos, y_pos, window_h, window_w):
+    def __init__(self, x_pos, y_pos, window_h, window_w, org_height, org_width,
+                 animal_type, speed):
         # all values below should be adjusted post test simulations
         self.x_pos = x_pos
         self.y_pos = y_pos
-        self.org_height = 50
-        self.org_width = 50
+        self.org_height = org_height
+        self.org_width = org_width
         self.window_h = window_h
         self.window_w = window_w
         self.age = 0
@@ -16,8 +17,9 @@ class Organisms:
         self.energy_level = 10
         self.life_expectancy = 50
         self.is_alive = True
-        self.speed = 20
-        self.animal_type = 0
+        self.speed = speed
+        self.animal_type = animal_type
+        self.colors = [(51, 255, 51), (204, 0, 0)]
 
     def __del__(self):
         return
@@ -25,16 +27,19 @@ class Organisms:
     # Using rectangle, but can update for a different shape or icon
     def insert_organism(self, window):
         """Function to insert organism with defined size, and grid position"""
-        pygame.draw.rect(window, (255, 255, 255), (self.x_pos, self.y_pos,
-                                                   self.org_height,
-                                                   self.org_width))
+        pygame.draw.rect(window,
+                         self.colors[self.animal_type-1],
+                         (self.x_pos, self.y_pos,
+                          self.org_height, self.org_width))
 
     def move(self):
         """Finding random values for x and y values.
         -speed is max speed in left or down directions
         Reducing energy for each movement made"""
-        self.x_pos = self.x_pos + random.randint(-self.speed, self.speed)
-        self.y_pos = self.y_pos + random.randint(-self.speed, self.speed)
+        self.x_pos = self.x_pos + self.org_width * random.randint(-self.speed,
+                                                                  self.speed)
+        self.y_pos = self.y_pos + self.org_height * random.randint(-self.speed,
+                                                                   self.speed)
         self.energy_level -= 1
 
         # Code to ensure the organism does not

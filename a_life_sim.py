@@ -97,12 +97,17 @@ while pygame_active:
             # Will need to update this later
             all_organisms = [
                 Organism(x_pos=200, y_pos=200,
-                         window_h=window_height, window_w=window_width
+                         window_h=window_height, window_w=window_width,
+                         org_height=Y_PX_SIZE, org_width=X_PX_SIZE
                          ),
                 Herbivores(x_pos=300, y_pos=500,
-                           window_h=window_height, window_w=window_width),
-                Carnivores(x_pos=800, y_pos=200, window_h=window_height,
-                           window_w=window_width)
+                           window_h=window_height, window_w=window_width,
+                           org_height=Y_PX_SIZE, org_width=X_PX_SIZE
+                           ),
+                Carnivores(x_pos=800, y_pos=200,
+                           window_h=window_height, window_w=window_width,
+                           org_height=Y_PX_SIZE, org_width=X_PX_SIZE
+                           )
                 ]
         else:
             organism_data = json_reader(f"./saves/id_{menus.game_id}")
@@ -181,4 +186,4 @@ while pygame_active:
 
         # Setting frame rate, lower setting seems to be easier to follow
         # Also if higher, the sim runs quickly due to energy consumption
-        clock.tick(30*menus.speed)
+        clock.tick(5*menus.speed)
