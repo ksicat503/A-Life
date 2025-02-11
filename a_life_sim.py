@@ -94,20 +94,39 @@ while pygame_active:
     if menus.sim_active:
         if menus.load_game is False:
             # Will need to update this later
-            all_organisms = [
-                Organism(x_pos=200, y_pos=200,
-                         window_h=window_height, window_w=window_width,
-                         org_height=Y_PX_SIZE, org_width=X_PX_SIZE
-                         ),
-                Herbivores(x_pos=300, y_pos=500,
-                           window_h=window_height, window_w=window_width,
-                           org_height=Y_PX_SIZE, org_width=X_PX_SIZE
-                           ),
-                Carnivores(x_pos=800, y_pos=200,
-                           window_h=window_height, window_w=window_width,
-                           org_height=Y_PX_SIZE, org_width=X_PX_SIZE
-                           )
-                ]
+            # all_organisms = [
+            #     Organism(x_pos=200, y_pos=200,
+            #              window_h=window_height, window_w=window_width,
+            #              org_height=Y_PX_SIZE, org_width=X_PX_SIZE
+            #              ),
+            #     Herbivores(x_pos=300, y_pos=500,
+            #                window_h=window_height, window_w=window_width,
+            #                org_height=Y_PX_SIZE, org_width=X_PX_SIZE
+            #                ),
+            #     Carnivores(x_pos=800, y_pos=200,
+            #                window_h=window_height, window_w=window_width,
+            #                org_height=Y_PX_SIZE, org_width=X_PX_SIZE
+            #                )
+            #     ]
+            all_organisms = []
+            counter = 0
+            for x in range(10):
+                row = random.randint(0, rows - 1)
+                col = random.randint(0, cols - 1)
+                if counter == 0:
+                    all_organisms.append(Herbivores(
+                        row*grid_size,
+                        col*grid_size,
+                        window_h=window_height, window_w=window_width,
+                        org_height=Y_PX_SIZE, org_width=X_PX_SIZE))
+                    counter = 1
+                else:
+                    all_organisms.append(Carnivores(
+                        row*grid_size,
+                        col*grid_size,
+                        window_h=window_height, window_w=window_width,
+                        org_height=Y_PX_SIZE, org_width=X_PX_SIZE))
+                    counter = 0
         else:
             # potentially move this to reading file or make a load data file
             organism_data = json_reader(
