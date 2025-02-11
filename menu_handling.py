@@ -175,14 +175,17 @@ class Menu_Handler:
             if self.sim_1_button.draw(self.window):
                 self.game_id = int(saves[max(0, len(saves)-3)][3:])
                 self.sim_active = True
+                self.load_game = True
         if len(saves) >= 2:
             if self.sim_2_button.draw(self.window):
                 self.game_id = int(saves[max(1, len(saves)-2)][3:])
                 self.sim_active = True
+                self.load_game = True
         if len(saves) >= 3:
             if self.sim_3_button.draw(self.window):
                 self.game_id = int(saves[max(2, len(saves)-1)][3:])
                 self.sim_active = True
+                self.load_game = True
 
         if self.back_button.draw(self.window):
             pygame.time.wait(100)
