@@ -124,7 +124,7 @@ class Forest(Environment):
 
     def regenerate_resources(self):
         """
-        Allows regeneration of some resources, 
+        Allows regeneration of some resources,
         randomized between .001 and .005
         """
         # Forests can slowly regenerate resources (trees)
