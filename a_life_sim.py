@@ -2,7 +2,7 @@ import pygame
 import os
 # import numpy as np
 import random
-from test_organism import Organism
+# from test_organism import Organism
 from carnivores import Carnivores
 from herbivores import Herbivores
 from menu_handling import Menu_Handler
@@ -21,6 +21,8 @@ window_width = 800
 # This is needed to clear the screen during sim,
 # as fill function needs the variable
 black = (0, 0, 0)
+
+num_organisms = 10
 
 # Initializing the window
 window = pygame.display.set_mode((window_height, window_width))
@@ -95,15 +97,25 @@ while pygame_active:
     if menus.sim_active:
         if menus.load_game is False:
             # Will need to update this later
-            all_organisms = [
-                Organism(x_pos=200, y_pos=200,
-                         window_h=window_height, window_w=window_width
-                         ),
-                Herbivores(x_pos=300, y_pos=500,
-                           window_h=window_height, window_w=window_width),
-                Carnivores(x_pos=800, y_pos=200, window_h=window_height,
-                           window_w=window_width)
-                ]
+            all_organisms = []
+            counter = 0
+            for x in range(num_organisms):
+                row = random.randint(0, rows - 1)
+                col = random.randint(0, cols - 1)
+                if counter == 0:
+                    all_organisms.append(Herbivores(
+                        row*grid_size,
+                        col*grid_size,
+                        window_h=window_height,
+                        window_w=window_width))
+                    counter = 1
+                else:
+                    all_organisms.append(Carnivores(
+                        row*grid_size,
+                        col*grid_size,
+                        window_h=window_height,
+                        window_w=window_width))
+                    counter = 0
         else:
             organism_data = json_reader(f"./saves/id_{menus.game_id}")
             all_organisms = []
@@ -155,7 +167,7 @@ while pygame_active:
         else:
             # Move all the organisms
             for organism in all_organisms:
-                organism.move()
+                organism.move(grid)
 
             # Clear screen. Important or else is just paints the screen
             # as the organism moves.
@@ -170,15 +182,6 @@ while pygame_active:
         # update the display for the new movement
         pygame.display.update()
 
-        # # print to show energy is decreasing with movement
-        # print(organism_test.energy)
-
-        # # Added some code to stop the sim when the organism runs out of
-        # energy
-        # # Take this out to run continuously
-        # if organism_test.energy == 0:
-        #     sim_running = False
-
         # Setting frame rate, lower setting seems to be easier to follow
         # Also if higher, the sim runs quickly due to energy consumption
-        clock.tick(30*menus.speed)
+        clock.tick(5*menus.speed)

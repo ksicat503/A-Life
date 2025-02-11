@@ -8,13 +8,14 @@ class Herbivores(Organisms):
         self.maturation_age = 10
         self.offspring_chance = 0.05
         self.animal_type = 1
+        self.color = (128, 0, 128)
 
-    def move(self):
+    def move(self, grid):
         """Herbivores-speicifc movement features.
 
         If occupying grassland, reset days_since_fed to 0.
         """
-        super().move()
+        super().move(grid)
         # TO-DO: reset days_since_fed to 0 if new position overlaps with
         # grassland unit in the environment
 

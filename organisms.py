@@ -16,7 +16,7 @@ class Organisms:
         self.energy_level = 10
         self.life_expectancy = 50
         self.is_alive = True
-        self.speed = 20
+        self.speed = 5
         self.animal_type = 0
 
     def __del__(self):
@@ -25,25 +25,27 @@ class Organisms:
     # Using rectangle, but can update for a different shape or icon
     def insert_organism(self, window):
         """Function to insert organism with defined size, and grid position"""
-        pygame.draw.rect(window, (255, 255, 255), (self.x_pos, self.y_pos,
-                                                   self.org_height,
-                                                   self.org_width))
+        if self.is_alive:
+            pygame.draw.rect(window, self.color, (self.x_pos, self.y_pos,
+                                                  self.org_height,
+                                                  self.org_width))
 
-    def move(self):
+    def move(self, grid):
         """Finding random values for x and y values.
         -speed is max speed in left or down directions
         Reducing energy for each movement made"""
-        self.x_pos = self.x_pos + random.randint(-self.speed, self.speed)
-        self.y_pos = self.y_pos + random.randint(-self.speed, self.speed)
-        self.energy_level -= 1
+        # Move organism randomly and reduce energy
+        if not self.is_alive:
+            return
 
-        # Code to ensure the organism does not
-        # move beyond the boundaries of the screen
-        self.x_pos = max(0, min(self.window_w - self.org_width, self.x_pos))
-        self.y_pos = max(0, min(self.window_h - self.org_height, self.y_pos))
+        new_x = self.x_pos // 50 + random.randint(-2, 2)
+        new_y = self.y_pos // 50 + random.randint(-2, 2)
 
-        # TO-DO: Code to ensure the new position is not occupied by another
-        # organism. Needs data fetched from environment to check that here
+        new_x = max(0, min(len(grid[0])-1, new_x))
+        new_y = max(0, min(len(grid)-1, new_y))
+
+        self.x_pos = new_x * 50
+        self.y_pos = new_y * 50
 
     def survival_chance(self):
         """Random survival chance. *** ADD DISASTER-SURVIVAL CHANCE HERE???***

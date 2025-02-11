@@ -8,16 +8,20 @@ class Carnivores(Organisms):
         self.maturation_age = 10
         self.offspring_chance = 0.05
         self.animal_type = 2
+        self.color = (255, 0, 0)
 
-    def move(self):
+    def move(self, grid):
         """Carnivores-speicifc movement features.
 
         If new position overlaps with a Herbivore object, reset days_since_fed
         to 0 and delete instance of the consumed Herbivore object
         """
-        super().move()
+        super().move(grid)
         # TO-DO: reset days_since_fed to 0 when new position overlaps with a
         # Herbivore object, remove consumed Herbivore object
+
+    def handle_collision(self, all_organisms):
+        return super().handle_collision(all_organisms)
 
     def reproduce(self):
         """Random chance of offspring reproduction.

@@ -30,13 +30,6 @@ def json_reader(file_name):
 def sim_json_writer(input, file_name):
     """Function pulls the existing runs that are stored and appends
     the newest version. Updated to create the file if it doesn't exist"""
-    # print(input)
-    # data = json_reader(file_name)
-    # if data is None:
-    #     with open("sim.json", 'w') as f:
-    #         json.dump([input], f, indent=4)
-    # else:
-    #     data.append(input)
     sim_data = []
     for x in input:
         for terrain in x:
