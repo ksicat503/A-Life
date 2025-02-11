@@ -32,7 +32,7 @@ class Organisms:
                          (self.x_pos, self.y_pos,
                           self.org_height, self.org_width))
 
-    def move(self):
+    def move(self, all_organisms):
         """Finding random values for x and y values.
         -speed is max speed in left or down directions
         Reducing energy for each movement made"""
@@ -46,6 +46,22 @@ class Organisms:
         # move beyond the boundaries of the screen
         self.x_pos = max(0, min(self.window_w - self.org_width, self.x_pos))
         self.y_pos = max(0, min(self.window_h - self.org_height, self.y_pos))
+
+        for organism in all_organisms:
+            if organism != self:
+                # Create Pygame Rect objects to compare two orgs
+                # to make use of colliderect
+                first_rect = pygame.Rect(self.x_pos,
+                                         self.y_pos,
+                                         self.org_width,
+                                         self.org_height)
+                second_rect = pygame.Rect(organism.x_pos,
+                                          organism.y_pos,
+                                          organism.org_width,
+                                          organism.org_height)
+
+                if first_rect.colliderect(second_rect):
+                    print("You have crashed")
 
         # TO-DO: Code to ensure the new position is not occupied by another
         # organism. Needs data fetched from environment to check that here

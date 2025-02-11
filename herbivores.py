@@ -11,12 +11,12 @@ class Herbivores(Organisms):
         self.offspring_chance = 0.05
         self.animal_type = 1
 
-    def move(self):
+    def move(self, all_organisms):
         """Herbivores-speicifc movement features.
 
         If occupying grassland, reset days_since_fed to 0.
         """
-        super().move()
+        super().move(all_organisms)
         # TO-DO: reset days_since_fed to 0 if new position overlaps with
         # grassland unit in the environment
 

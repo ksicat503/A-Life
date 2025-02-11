@@ -11,13 +11,13 @@ class Carnivores(Organisms):
         self.offspring_chance = 0.05
         self.animal_type = 2
 
-    def move(self):
+    def move(self, all_organisms):
         """Carnivores-speicifc movement features.
 
         If new position overlaps with a Herbivore object, reset days_since_fed
         to 0 and delete instance of the consumed Herbivore object
         """
-        super().move()
+        super().move(all_organisms)
         # TO-DO: reset days_since_fed to 0 when new position overlaps with a
         # Herbivore object, remove consumed Herbivore object
 

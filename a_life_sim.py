@@ -110,7 +110,7 @@ while pygame_active:
             #     ]
             all_organisms = []
             counter = 0
-            for x in range(10):
+            for x in range(20):
                 row = random.randint(0, rows - 1)
                 col = random.randint(0, cols - 1)
                 if counter == 0:
@@ -196,7 +196,7 @@ while pygame_active:
         else:
             # Move all the organisms
             for organism in all_organisms:
-                organism.move()
+                organism.move(all_organisms)
 
             # Clear screen. Important or else is just paints the screen
             # as the organism moves.
