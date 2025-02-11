@@ -3,25 +3,23 @@ from organisms import Organisms
 
 
 class Carnivores(Organisms):
-    def __init__(self, x_pos, y_pos, window_h, window_w):
-        super().__init__(x_pos, y_pos, window_h, window_w)
+    def __init__(self, x_pos, y_pos, window_h, window_w,
+                 org_height, org_width):
+        super().__init__(x_pos, y_pos, window_h, window_w,
+                         org_height, org_width, 2, 2)
         self.maturation_age = 10
         self.offspring_chance = 0.05
         self.animal_type = 2
-        self.color = (255, 0, 0)
 
-    def move(self, grid):
+    def move(self):
         """Carnivores-speicifc movement features.
 
         If new position overlaps with a Herbivore object, reset days_since_fed
         to 0 and delete instance of the consumed Herbivore object
         """
-        super().move(grid)
+        super().move()
         # TO-DO: reset days_since_fed to 0 when new position overlaps with a
         # Herbivore object, remove consumed Herbivore object
-
-    def handle_collision(self, all_organisms):
-        return super().handle_collision(all_organisms)
 
     def reproduce(self):
         """Random chance of offspring reproduction.
@@ -39,4 +37,5 @@ class Carnivores(Organisms):
                 new_x_pos = self.x_pos - self.org_width
             # TO-DO: if new organism instance location is already occupied,
             # return without reproducing
-            Carnivores(new_x_pos, self.y_pos)
+            return Carnivores(new_x_pos, self.y_pos, self.window_h,
+                              self.window_w, self.org_height, self.org_width)

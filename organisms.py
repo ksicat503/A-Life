@@ -3,12 +3,13 @@ import pygame
 
 
 class Organisms:
-    def __init__(self, x_pos, y_pos, window_h, window_w):
+    def __init__(self, x_pos, y_pos, window_h, window_w, org_height, org_width,
+                 animal_type, speed):
         # all values below should be adjusted post test simulations
         self.x_pos = x_pos
         self.y_pos = y_pos
-        self.org_height = 50
-        self.org_width = 50
+        self.org_height = org_height
+        self.org_width = org_width
         self.window_h = window_h
         self.window_w = window_w
         self.age = 0
@@ -16,8 +17,8 @@ class Organisms:
         self.energy_level = 10
         self.life_expectancy = 50
         self.is_alive = True
-        self.speed = 5
-        self.animal_type = 0
+        self.speed = speed
+        self.animal_type = animal_type
 
     def __del__(self):
         return
@@ -25,27 +26,29 @@ class Organisms:
     # Using rectangle, but can update for a different shape or icon
     def insert_organism(self, window):
         """Function to insert organism with defined size, and grid position"""
-        if self.is_alive:
-            pygame.draw.rect(window, self.color, (self.x_pos, self.y_pos,
-                                                  self.org_height,
-                                                  self.org_width))
+        colors = [(51, 255, 51), (204, 0, 0)]
+        pygame.draw.rect(window,
+                         colors[self.animal_type-1],
+                         (self.x_pos, self.y_pos,
+                          self.org_height, self.org_width))
 
-    def move(self, grid):
+    def move(self):
         """Finding random values for x and y values.
         -speed is max speed in left or down directions
         Reducing energy for each movement made"""
-        # Move organism randomly and reduce energy
-        if not self.is_alive:
-            return
+        self.x_pos = self.x_pos + self.org_width * random.randint(-self.speed,
+                                                                  self.speed)
+        self.y_pos = self.y_pos + self.org_height * random.randint(-self.speed,
+                                                                   self.speed)
+        self.energy_level -= 1
 
-        new_x = self.x_pos // 50 + random.randint(-2, 2)
-        new_y = self.y_pos // 50 + random.randint(-2, 2)
+        # Code to ensure the organism does not
+        # move beyond the boundaries of the screen
+        self.x_pos = max(0, min(self.window_w - self.org_width, self.x_pos))
+        self.y_pos = max(0, min(self.window_h - self.org_height, self.y_pos))
 
-        new_x = max(0, min(len(grid[0])-1, new_x))
-        new_y = max(0, min(len(grid)-1, new_y))
-
-        self.x_pos = new_x * 50
-        self.y_pos = new_y * 50
+        # TO-DO: Code to ensure the new position is not occupied by another
+        # organism. Needs data fetched from environment to check that here
 
     def survival_chance(self):
         """Random survival chance. *** ADD DISASTER-SURVIVAL CHANCE HERE???***
