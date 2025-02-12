@@ -3,7 +3,8 @@ import random
 
 class Environment:
     """
-    Represents an Environment. Should be able to take a square in the sim board
+    Represents an Environment. Should be able to take a
+    square in the sim board.
 
     Attributes:
         name: name of the terrain/environment type
@@ -12,6 +13,8 @@ class Environment:
         weather_freq: list of weighted frequencies for weather_options
         possible_disasters: list of disasters allowed in environment
         starting_resources: starting amount of resources, number between 0 to 1
+        color: RGB color of the environment for visualization
+        inhabitants: list of organisms in the environment
     """
     def __init__(
             self,
@@ -24,9 +27,9 @@ class Environment:
             starting_resources=None
             ):
         """
-        Initialize environment attributes
-        *self.total_resources is randomized
-        *Temperature is in Fahrenheit
+        Initialize environment attributes.
+        *self.total_resources is randomized.
+        *Temperature is in Fahrenheit.
         """
         self.terrain = name
         self.temperature = base_temp
@@ -40,7 +43,7 @@ class Environment:
                                 )
         self.disaster_present = None
         self.weather = "clear"
-        # Stores organisms in environment. allows for 1+ organisms
+        # Stores organisms in the environment. Allows for 1+ organisms
         self.inhabitants = []
 
     def get_weather(self):
@@ -74,23 +77,23 @@ class Environment:
         self.temperature = temp
 
     def use_resources(self, amt):
-        """Uses resources. Makes sure the total amount doesnt go below zero"""
+        """Uses resources. Makes sure the total amount doesn't go below zero"""
         self.total_resources -= amt
         self.total_resources = max(0, self.total_resources - amt)
 
     def spawn_disaster(self):
         """
-        Randomize a disaster
-        *Add more disasters if needed and change based on discussions
-        *Figure out how this affects everything
-        ***Figure out how to end a disaster using game
+        Randomizes a disaster.
+        *Add more disasters if needed and change based on discussions.
+        *Figure out how this affects everything.
+        ***Figure out how to end a disaster using game logic.
         """
         disaster_chance = 0.05
 
         if random.random() < disaster_chance:
             disaster_class = random.choice(self.possible_disasters)
             self.disaster_present = disaster_class()
-            print(f"Disaster occured: {self.disaster_present}")
+            print(f"Disaster occurred: {self.disaster_present}")
 
     def end_disaster(self):
         """Ends current disaster if one is present"""
@@ -99,7 +102,7 @@ class Environment:
             self.disaster_present = None
             print(f"{prev_disaster} has ended.")
         else:
-            print("there is no disaster present")
+            print("There is no disaster present.")
 
 
 class Grassland(Environment):
@@ -111,6 +114,7 @@ class Grassland(Environment):
             ["clear", "rain", "storm"],
             [0.45, 0.4, 0.15],
             ["Drought", "Flood", "Wildfire", "Earthquake"],
+            (124, 192, 64)
         )
 
 
@@ -122,13 +126,14 @@ class Forest(Environment):
             50,
             ["clear", "rain", "snow"],
             [0.5, 0.3, 0.2],
-            ["Wildfire", "Drought", "Flood", "Earthquake"]
+            ["Wildfire", "Drought", "Flood", "Earthquake"],
+            (34, 85, 34)
         )
 
     def regenerate_resources(self):
         """
         Allows regeneration of some resources,
-        randomized between .001 and .005
+        randomized between .001 and .005.
         """
         # Forests can slowly regenerate resources (trees)
         self.total_resources += random.uniform(0.001, 0.005)
@@ -142,7 +147,8 @@ class Desert(Environment):
             90,
             ["clear", "rain"],
             [0.98, 0.02],
-            ["Sandstorm", "Earthquake", "Drought"]
+            ["Sandstorm", "Earthquake", "Drought"],
+            (237, 201, 175)
         )
 
 
@@ -155,7 +161,8 @@ class Ocean(Environment):
             60.9,
             ["clear"],
             [1.0],
-            None
+            None,
+            (28, 107, 160)
         )
 
 
@@ -167,7 +174,8 @@ class Tundra(Environment):
             -30,
             ["clear", "snow", "rain"],
             [0.2, 0.7, 0.1],
-            ["Blizzard"]
+            ["Blizzard"],
+            (180, 190, 190)
         )
 
 
@@ -179,5 +187,6 @@ class Swamp(Environment):
             76,
             ["clear", "rain"],
             [0.45, .55],
-            ["Flood", "Hurricane", "Drought"]
+            ["Flood", "Hurricane", "Drought"],
+            (63, 92, 51)
         )
