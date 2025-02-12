@@ -41,6 +41,16 @@ class Environment:
                                 if starting_resources is not None
                                 else random.uniform(0.3, 1.0)
                                 )
+        self.terrain = name
+        self.temperature = base_temp
+        self.weather_options = weather_options
+        self.weather_freq = weather_freq
+        self.possible_disasters = possible_disasters
+        self.color = color
+        self.total_resources = (starting_resources
+                                if starting_resources is not None
+                                else random.uniform(0.3, 1.0)
+                                )
         self.disaster_present = None
         self.weather = "clear"
         # Stores organisms in the environment. Allows for 1+ organisms

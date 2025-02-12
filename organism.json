@@ -1,0 +1,40 @@
+[
+    {
+        "x_pos": 332,
+        "y_pos": 284,
+        "org_height": 50,
+        "org_width": 50,
+        "window_h": 800,
+        "window_w": 800,
+        "age": 0,
+        "days_since_fed": 0,
+        "energy_level": -69,
+        "life_expectancy": 10,
+        "offspring_chance": 0.1,
+        "can_reproduce": false,
+        "is_alive": true,
+        "speed": 20
+    },
+    {
+        "x_pos": 302,
+        "y_pos": 501,
+        "age": 0,
+        "days_since_fed": 0,
+        "energy_level": 5,
+        "life_expectancy": 20,
+        "offspring_chance": 0.2,
+        "can_reproduce": false,
+        "is_alive": true
+    },
+    {
+        "x_pos": 957,
+        "y_pos": 176,
+        "age": 0,
+        "days_since_fed": 0,
+        "energy_level": 3,
+        "life_expectancy": 10,
+        "offspring_chance": 0.1,
+        "can_reproduce": false,
+        "is_alive": true
+    }
+]
