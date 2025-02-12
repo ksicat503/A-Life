@@ -20,6 +20,7 @@ class Environment:
             weather_options,
             weather_freq,
             possible_disasters,
+            color,
             starting_resources=None
             ):
         """
@@ -32,6 +33,7 @@ class Environment:
         self.weather_options = weather_options
         self.weather_freq = weather_freq
         self.possible_disasters = possible_disasters
+        self.color = color
         self.total_resources = (starting_resources
                                 if starting_resources is not None
                                 else random.uniform(0.3, 1.0)
