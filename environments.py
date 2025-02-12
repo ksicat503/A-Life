@@ -1,4 +1,3 @@
-# Do we want to consider doing seasons and stuff?
 import random
 
 
@@ -39,6 +38,8 @@ class Environment:
                                 )
         self.disaster_present = None
         self.weather = "clear"
+        # Stores organisms in environment. allows for 1+ organisms
+        self.inhabitants = []
 
     def get_weather(self):
         """Returns weather"""
