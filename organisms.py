@@ -26,6 +26,9 @@ class Organisms:
     # Using rectangle, but can update for a different shape or icon
     def insert_organism(self, window):
         """Function to insert organism with defined size, and grid position"""
+        if not self.is_alive:
+            return
+
         colors = [(51, 255, 51), (204, 0, 0)]
         pygame.draw.rect(window,
                          colors[self.animal_type-1],
@@ -36,6 +39,9 @@ class Organisms:
         """Finding random values for x and y values.
         -speed is max speed in left or down directions
         Reducing energy for each movement made"""
+        if not self.is_alive:
+            return
+
         self.x_pos = self.x_pos + self.org_width * random.randint(-self.speed,
                                                                   self.speed)
         self.y_pos = self.y_pos + self.org_height * random.randint(-self.speed,
@@ -47,21 +53,34 @@ class Organisms:
         self.x_pos = max(0, min(self.window_w - self.org_width, self.x_pos))
         self.y_pos = max(0, min(self.window_h - self.org_height, self.y_pos))
 
+        # Loop through all organisms and compare them to the
+        # organism object that is moving
         for organism in all_organisms:
             if organism != self:
                 # Create Pygame Rect objects to compare two orgs
                 # to make use of colliderect
+                # This is self, so organism that is moving
                 first_rect = pygame.Rect(self.x_pos,
                                          self.y_pos,
                                          self.org_width,
                                          self.org_height)
+                # This is an organism from list being compared to moving org
                 second_rect = pygame.Rect(organism.x_pos,
                                           organism.y_pos,
                                           organism.org_width,
                                           organism.org_height)
-
+                # Utilizing built in pygame function to detect
+                # when two object collide
                 if first_rect.colliderect(second_rect):
-                    print("You have crashed")
+                    # Compare animal types. 1 is Herb, 2 is Carn
+                    # This specific if is checking if the herb hit a carn
+                    if self.animal_type == 1 and organism.animal_type == 2:
+                        print("Herb ran into Carn")
+                        self.is_alive = False
+                        # Check if carn ran into herb
+                    elif self.animal_type == 2 and organism.animal_type == 1:
+                        organism.is_alive = False
+                        print("Carn ran into Herb")
 
         # TO-DO: Code to ensure the new position is not occupied by another
         # organism. Needs data fetched from environment to check that here

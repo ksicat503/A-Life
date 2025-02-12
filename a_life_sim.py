@@ -108,9 +108,12 @@ while pygame_active:
             #                org_height=Y_PX_SIZE, org_width=X_PX_SIZE
             #                )
             #     ]
+            # Code to loop and create an herb or carn every other iteration.
+            # Helps if needing to add a lot of organisms
             all_organisms = []
             counter = 0
             for x in range(20):
+                # Create a random row and col to insert an organism
                 row = random.randint(0, rows - 1)
                 col = random.randint(0, cols - 1)
                 if counter == 0:
