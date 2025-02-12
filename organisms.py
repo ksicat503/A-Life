@@ -73,11 +73,11 @@ class Organisms:
                 # when two object collide
                 if first_rect.colliderect(second_rect):
                     # Compare animal types. 1 is Herb, 2 is Carn
-                    # This specific if is checking if the herb hit a carn
+                    # This is checking if the herb hit a carn
                     if self.animal_type == 1 and organism.animal_type == 2:
                         print("Herb ran into Carn")
                         self.is_alive = False
-                        # Check if carn ran into herb
+                        # Check if carn hit a herb
                     elif self.animal_type == 2 and organism.animal_type == 1:
                         organism.is_alive = False
                         print("Carn ran into Herb")
