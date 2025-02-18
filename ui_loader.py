@@ -31,7 +31,6 @@ def load_ui_components():
     components['text']['body_2_2_1'] = Text(WINDOW_WIDTH//6, 600, 25, False)
     components['text']['body_2_2_2'] = Text(WINDOW_WIDTH//6, 625, 25, False)
 
-
     # Starting Menu UI Components
     components['buttons']['new_sim'] = Button(
             WINDOW_WIDTH // 2, 300,
