@@ -28,17 +28,24 @@ class Button():
 
 
 class Text():
-    def __init__(self, x, y, font_size):
+    def __init__(self, x, y, font_size, center=True):
         """ Initalize class variables"""
         self.font = pygame.font.Font(
             "./assets/Audiowide-Regular.ttf", font_size)
-        self.center = (x, y)
+        self.position = (x, y)
+        self.center = center
 
     def draw(self, window, text):
         """ Draws text to the window"""
         text = self.font.render(text, True, (221, 250, 249))
-        rect_center = text.get_rect(center=self.center)
-        window.blit(text, rect_center)
+        if self.center:
+            rect = text.get_rect(center=self.position)
+        else:
+            # Want to center on height but be left justified
+            height_center = text.get_rect().height // 2
+            rect = text.get_rect(
+                topleft=(self.position[0], self.position[1]-height_center))
+        window.blit(text, rect)
 
 
 class Toggle():

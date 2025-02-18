@@ -79,7 +79,6 @@ while pygame_active:
 
     pygame.display.update()
     if menus.sim_active:
-        all_organisms = []
         if menus.load_game is False:
             data = get_game_data()
         else:
@@ -101,6 +100,8 @@ while pygame_active:
             if event.type == pygame.QUIT:
                 menus.sim_active = False
                 pygame_active = False
+                # Should we save here? or only save when the user presses
+                # the save button in the pause menu?
                 save_game(menus.game_id, all_organisms, grid)
 
         if menus.current_menu != 'none':

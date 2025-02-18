@@ -30,6 +30,7 @@ class Menu_Handler:
         self.novel_feature = True
         self.organisms = None
         self.speed = self.speed_vals[0]
+        self.stats = {}
 
     def set_organism_data(self, organisms):
         """ Set organism data so we can view stats"""
@@ -165,6 +166,7 @@ class Menu_Handler:
         if self.ui_components['buttons']['stat'].draw(
              self.window, self.can_click):
             self.current_menu = 'stats'
+            self.calculate_stats()
             self.can_click = False
         if self.ui_components['buttons']['save'].draw(
              self.window, self.can_click):
@@ -174,7 +176,36 @@ class Menu_Handler:
             self.set_game_state_variables()
             self.can_click = False
 
+    def calculate_stats(self):
+        self.stats['h_death_by_hunger'] = 0
+        self.stats['c_death_by_hunger'] = 0
+        self.stats['h_death_by_consumed'] = 0
+        self.stats['c_death_by_consumed'] = 0
+        self.stats['h_count'] = 0
+        self.stats['c_count'] = 0
+
+        for organism in self.organisms:
+            if organism.animal_type == 1:
+                self.stats['h_count'] += 1
+            elif organism.animal_type == 2:
+                self.stats['c_count'] += 1
+
     def draw_stat_menu(self):
-        print(self.organisms[0].x_pos)
-        print(self.organisms[0].y_pos)
-        self.current_menu = 'main'
+        """ Displays Stats for the organisms"""
+        
+        # Draws background
+        self.window.blit(self.ui_components['background'], (0, 0))
+
+        # Draws Text
+        self.ui_components['text']['title'].draw(self.window, "Organism Stats")
+        self.ui_components['text']['subtitle_1'].draw(
+            self.window, "Population")
+        self.ui_components['text']['body_1_1'].draw(self.window, f"Herbivore : {self.stats['h_count']}")
+        self.ui_components['text']['body_1_2'].draw(self.window, f"Carnivore : {self.stats['c_count']}")
+        self.ui_components['text']['subtitle_2'].draw(self.window, "Deaths")
+        self.ui_components['text']['subtitle_2_1'].draw(self.window, "By Hunger")
+        self.ui_components['text']['body_2_1_1'].draw(self.window, f"Herbivore : {self.stats['h_death_by_hunger']}")
+        self.ui_components['text']['body_2_1_2'].draw(self.window, f"Carnivore : {self.stats['c_death_by_hunger']}")
+        self.ui_components['text']['subtitle_2_2'].draw(self.window, "By Consumed")
+        self.ui_components['text']['body_2_2_1'].draw(self.window, f"Herbivore : {self.stats['h_death_by_consumed']}")
+        self.ui_components['text']['body_2_2_2'].draw(self.window, f"Carnivore : {self.stats['c_death_by_consumed']}")
