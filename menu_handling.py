@@ -213,5 +213,6 @@ class Menu_Handler:
         if self.quit_button.draw(self.window):
             self.sim_active = False
             self.paused = False
+            self.load_game = False
             self.speed = 1
             self.current_menu = 'main'
