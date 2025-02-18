@@ -2,20 +2,18 @@
 SOURCES
 Background Image: Generated using Gemini 2.0
 """
-
+import os
 
 import pygame
-import os
+
 from ui_loader import load_ui_components
 
 
 class Menu_Handler:
 
-    def __init__(self, screen_size, window, all_organisms):
+    def __init__(self, window):
         """ Initalize class variables"""
-        self.screen_size = screen_size
         self.window = window
-        self.organisms = all_organisms
         self.speed_vals = [1, 2, 4]
         self.can_click = True
         self.set_game_state_variables()
@@ -30,7 +28,12 @@ class Menu_Handler:
         self.exit = False
         self.save_game = False
         self.novel_feature = True
+        self.organisms = None
         self.speed = self.speed_vals[0]
+
+    def set_organism_data(self, organisms):
+        """ Set organism data so we can view stats"""
+        self.organisms = organisms
 
     def check_if_clickable(self):
         """ Checks to see if mouse press has been lifted"""
@@ -41,7 +44,6 @@ class Menu_Handler:
         """ Calls the draw method for each menu"""
         if not self.can_click:
             self.check_if_clickable()
-        print(f"clickable{self.can_click}")
 
         if self.current_menu == 'main':
             self.draw_main_menu()
@@ -169,7 +171,6 @@ class Menu_Handler:
             self.save_game = True
         if self.ui_components['buttons']['quit'].draw(
              self.window, self.can_click):
-            print('test')
             self.set_game_state_variables()
             self.can_click = False
 

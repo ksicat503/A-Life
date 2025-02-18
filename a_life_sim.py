@@ -1,14 +1,11 @@
-import pygame
-import os
-# import numpy as np
 import random
+
+import pygame
+
 from constants import WINDOW_HEIGHT, WINDOW_WIDTH, X_PX_SIZE, Y_PX_SIZE
-from test_organism import Organism
-from carnivores import Carnivores
-from herbivores import Herbivores
-from menu_handling import Menu_Handler
-from json_writer import org_json_writer, json_reader, sim_json_writer
+from data_manager import save_game, get_game_data
 from environments import Grassland, Tundra, Desert, Ocean, Swamp, Forest
+from menu_handling import Menu_Handler
 
 # initializing imported module
 # This initializes pygame and fonts to display text
@@ -64,8 +61,7 @@ def insert_grid_envs():
 
 
 # Initalize menus
-all_organisms = []
-menus = Menu_Handler((WINDOW_WIDTH, WINDOW_HEIGHT), window, all_organisms)
+menus = Menu_Handler(window)
 
 # setting bool value to start pygame window.
 pygame_active = True
@@ -85,26 +81,14 @@ while pygame_active:
     if menus.sim_active:
         all_organisms = []
         if menus.load_game is False:
-            # Will need to update this later
-            all_organisms.append(
-                Organism(x_pos=200, y_pos=200))
-            all_organisms.append(
-                Herbivores(x_pos=300, y_pos=500))
-            all_organisms.append(
-                Carnivores(x_pos=800, y_pos=200))
+            data = get_game_data()
         else:
-            # potentially move this to reading file or make a load data file
-            organism_data = json_reader(
-                f"./saves/id_{menus.game_id}/organism.json")
-            for organism in organism_data:
-                # will need to update.
-                if organism['animal_type'] == 0:
-                    animal = Organism(organism['x_pos'], organism['y_pos'])
-                elif organism['animal_type'] == 1:
-                    animal = Herbivores(organism['x_pos'], organism['y_pos'])
-                else:
-                    animal = Carnivores(organism['x_pos'], organism['y_pos'])
-                all_organisms.append(animal)
+            data = get_game_data(menus.game_id)
+
+        all_organisms = data[0]
+        # Need to implement loading grid in get_game_data func
+        # grid = data[1]
+        menus.set_organism_data(all_organisms)
 
     while menus.sim_active:
         # Set up event for when the user quits out of the screen
@@ -117,33 +101,14 @@ while pygame_active:
             if event.type == pygame.QUIT:
                 menus.sim_active = False
                 pygame_active = False
-                # Make folder for new game save if it doesn't exist
-                if not os.path.exists('./saves'):
-                    os.makedirs('./saves')
-                if not os.path.exists(f'./saves/id_{menus.game_id}'):
-                    os.makedirs(f'./saves/id_{menus.game_id}')
-                # Save organism data
-                org_json_writer(all_organisms,
-                                f'./saves/id_{menus.game_id}/organism.json')
-                sim_json_writer(grid,
-                                f'./saves/id_{menus.game_id}/sims.json')
-
-        # Checks if game needs to be saved.
-        if menus.save_game:
-            # Make folder for new game save if it doesn't exist
-            if not os.path.exists('./saves'):
-                os.makedirs('./saves')
-            if not os.path.exists(f'./saves/id_{menus.game_id}'):
-                os.makedirs(f'./saves/id_{menus.game_id}')
-            # Save organism data
-            org_json_writer(all_organisms,
-                            f'./saves/id_{menus.game_id}/organism.json')
-            sim_json_writer(grid,
-                            f'./saves/id_{menus.game_id}/sims.json')
-            menus.save_game = False
+                save_game(menus.game_id, all_organisms, grid)
 
         if menus.current_menu != 'none':
             menus.display_menu()
+            # Check if game needs to be saved
+            if menus.save_game:
+                save_game(menus.game_id, all_organisms, grid)
+                menus.save_game = False
         else:
             # Move all the organisms
             for organism in all_organisms:
