@@ -175,9 +175,50 @@ while pygame_active:
         if menus.paused:
             menus.draw_pause_menu()
         else:
-            # Move all the organisms
+            # Move all the organisms, manage organism collisions
+            for moving_organism in all_organisms:
+                # if this organism is set to dead from previous move step,
+                # continue to next organism in loop
+                if not moving_organism.is_alive:
+                    continue
+
+                # save original organism, in case of collision with a same
+                # animal_type organism
+                original_organism = moving_organism.rect.copy()
+                moving_organism.move()
+
+                # check all other organisms for collisions
+                for check_organism in all_organisms:
+                    if not check_organism.is_alive:
+                        continue
+                    # check to avoid self-collision
+                    if moving_organism is check_organism:
+                        continue
+                    if moving_organism.rect.colliderect(check_organism.rect):
+                        # manage herbivore and carnivore collisions
+                        if (
+                            moving_organism.animal_type == 1 and
+                            check_organism.animal_type == 2
+                        ):
+                            moving_organism.is_alive = False
+                            check_organism.days_since_fed = 0
+                            break
+                        if (
+                            moving_organism.animal_type == 2 and
+                            check_organism.animal_type == 1
+                        ):
+                            check_organism.is_alive = False
+                            moving_organism.days_since_fed = 0
+                            break
+                        # when same animal_type collides, revert back the
+                        # moving_organism to its original position
+                        else:
+                            moving_organism.rect = original_organism
+
+            # remove any organisms that are no longer alive
             for organism in all_organisms:
-                organism.move()
+                if organism.is_alive is False:
+                    all_organisms.remove(organism)
 
             # Clear screen. Important or else is just paints the screen
             # as the organism moves.
