@@ -1,17 +1,17 @@
 import random
 import pygame
+from constants import WINDOW_HEIGHT, WINDOW_WIDTH, X_PX_SIZE, Y_PX_SIZE
 
 
 class Organisms:
-    def __init__(self, x_pos, y_pos, window_h, window_w, org_height, org_width,
-                 animal_type, speed):
+    def __init__(self, x_pos, y_pos, animal_type, speed):
         # all values below should be adjusted post test simulations
         self.x_pos = x_pos
         self.y_pos = y_pos
-        self.org_height = org_height
-        self.org_width = org_width
-        self.window_h = window_h
-        self.window_w = window_w
+        self.org_height = Y_PX_SIZE
+        self.org_width = X_PX_SIZE
+        self.window_h = WINDOW_HEIGHT
+        self.window_w = WINDOW_WIDTH
         self.age = 0
         self.days_since_fed = 0
         self.energy_level = 10
