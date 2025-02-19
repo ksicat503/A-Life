@@ -1,54 +1,41 @@
-import pygame
-import os
-# import numpy as np
 import random
-from test_organism import Organism
-from carnivores import Carnivores
-from herbivores import Herbivores
+
+import pygame
+
+from constants import WINDOW_HEIGHT, WINDOW_WIDTH, X_PX_SIZE, Y_PX_SIZE
+from data_manager import save_game, get_game_data
+from environments import Grassland, Tundra, Desert, Swamp, Forest
 from menu_handling import Menu_Handler
-from json_writer import org_json_writer, json_reader, sim_json_writer
-from environments import Grassland, Tundra, Desert, Ocean, Swamp, Forest
 
 # initializing imported module
 # This initializes pygame and fonts to display text
 pygame.init()
 pygame.font.init()
 
-# defining the size of the window
-window_height = 800
-window_width = 800
-
 # This is needed to clear the screen during sim,
 # as fill function needs the variable
 black = (0, 0, 0)
-
-# Initializing the window
-window = pygame.display.set_mode((window_height, window_width))
-# This code allows us to change the name of the window
-pygame.display.set_caption('Artifical Life Sim')
 
 # clock to set frame rate in simulation
 clock = pygame.time.Clock()
 
 # List of terrain types
-terrain_classes = [Grassland, Forest, Desert, Ocean, Tundra, Swamp]
-# Set organism size
-X_PX_SIZE = 20
-Y_PX_SIZE = 20
+terrain_classes = [Grassland, Forest, Desert, Tundra, Swamp]
+
 # Setting size of the tiles organisms can move on. Same Size as organism
 grid_size = 20
 # Setting how many rows and columns
-rows = window_height // grid_size
-cols = window_width // grid_size
+rows = WINDOW_HEIGHT // grid_size
+cols = WINDOW_WIDTH // grid_size
 grid = []
 
 # Same code Michael provided but broken out
 # Create the grid with each location being assigned a terrain type
 # If we are loading a sim, probably a branch here
 # to set grid to value of saved info
-for _ in range(window_height // Y_PX_SIZE):
+for _ in range(WINDOW_HEIGHT // Y_PX_SIZE):
     row = []
-    for _ in range(window_width // X_PX_SIZE):
+    for _ in range(WINDOW_WIDTH // X_PX_SIZE):
         # Randomly select terrain to insert
         # create instance of that terrain
         # then append the terrain in the list
@@ -58,15 +45,15 @@ for _ in range(window_height // Y_PX_SIZE):
     grid.append(row)
 
 # Create Pygame window
-window = pygame.display.set_mode((window_width, window_height))
+window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("A-Life Sim Challenge")
 
 
 # Function to insert different envs for visual representation
 def insert_grid_envs():
-    for x in range(rows):
-        for y in range(cols):
-            terrain = grid[x][y]
+    for y in range(rows):
+        for x in range(cols):
+            terrain = grid[y][x]
             pygame.draw.rect(window,
                              terrain.color,
                              (x * grid_size, y * grid_size,
@@ -74,7 +61,7 @@ def insert_grid_envs():
 
 
 # Initalize menus
-menus = Menu_Handler((window_height, window_width), window)
+menus = Menu_Handler(window)
 
 # setting bool value to start pygame window.
 pygame_active = True
@@ -93,113 +80,88 @@ while pygame_active:
     pygame.display.update()
     if menus.sim_active:
         if menus.load_game is False:
-            # Will need to update this later
-            # all_organisms = [
-            #     Organism(x_pos=200, y_pos=200,
-            #              window_h=window_height, window_w=window_width,
-            #              org_height=Y_PX_SIZE, org_width=X_PX_SIZE
-            #              ),
-            #     Herbivores(x_pos=300, y_pos=500,
-            #                window_h=window_height, window_w=window_width,
-            #                org_height=Y_PX_SIZE, org_width=X_PX_SIZE
-            #                ),
-            #     Carnivores(x_pos=800, y_pos=200,
-            #                window_h=window_height, window_w=window_width,
-            #                org_height=Y_PX_SIZE, org_width=X_PX_SIZE
-            #                )
-            #     ]
-            # Code to loop and create an herb or carn every other iteration.
-            # Helps if needing to add a lot of organisms
-            all_organisms = []
-            counter = 0
-            for x in range(20):
-                # Create a random row and col to insert an organism
-                row = random.randint(0, rows - 1)
-                col = random.randint(0, cols - 1)
-                if counter == 0:
-                    all_organisms.append(Herbivores(
-                        row*grid_size,
-                        col*grid_size,
-                        window_h=window_height, window_w=window_width,
-                        org_height=Y_PX_SIZE, org_width=X_PX_SIZE))
-                    counter = 1
-                else:
-                    all_organisms.append(Carnivores(
-                        row*grid_size,
-                        col*grid_size,
-                        window_h=window_height, window_w=window_width,
-                        org_height=Y_PX_SIZE, org_width=X_PX_SIZE))
-                    counter = 0
+            data = get_game_data()
         else:
-            # potentially move this to reading file or make a load data file
-            organism_data = json_reader(
-                f"./saves/id_{menus.game_id}/organism.json")
-            all_organisms = []
-            for organism in organism_data:
-                # will need to update.
-                if organism['animal_type'] == 0:
-                    animal = Organism(organism['x_pos'], organism['y_pos'],
-                                      window_h=window_height,
-                                      window_w=window_width,
-                                      org_height=Y_PX_SIZE,
-                                      org_width=X_PX_SIZE
-                                      )
-                elif organism['animal_type'] == 1:
-                    animal = Herbivores(organism['x_pos'], organism['y_pos'],
-                                        window_h=window_height,
-                                        window_w=window_width,
-                                        org_height=Y_PX_SIZE,
-                                        org_width=X_PX_SIZE)
-                else:
-                    animal = Carnivores(organism['x_pos'], organism['y_pos'],
-                                        window_h=window_height,
-                                        window_w=window_width,
-                                        org_height=Y_PX_SIZE,
-                                        org_width=X_PX_SIZE)
-                all_organisms.append(animal)
+            data = get_game_data(menus.game_id)
+
+        all_organisms = data[0]
+        # Need to implement loading grid in get_game_data func
+        # grid = data[1]
+        menus.set_organism_data(all_organisms)
 
     while menus.sim_active:
         # Set up event for when the user quits out of the screen
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    menus.paused = True
+                    menus.current_menu = 'pause'
             # if event is of type quit then
             # set running bool to false
             if event.type == pygame.QUIT:
                 menus.sim_active = False
                 pygame_active = False
-                # Make folder for new game save if it doesn't exist
-                if not os.path.exists('./saves'):
-                    os.makedirs('./saves')
-                if not os.path.exists(f'./saves/id_{menus.game_id}'):
-                    os.makedirs(f'./saves/id_{menus.game_id}')
-                # Save organism data
-                org_json_writer(all_organisms,
-                                f'./saves/id_{menus.game_id}/organism.json')
-                sim_json_writer(grid,
-                                f'./saves/id_{menus.game_id}/sims.json')
+                # Should we save here? or only save when the user presses
+                # the save button in the pause menu?
+                save_game(menus.game_id, all_organisms, grid)
 
-        # Checks if game needs to be saved.
-        if menus.save_game:
-            # Make folder for new game save if it doesn't exist
-            if not os.path.exists('./saves'):
-                os.makedirs('./saves')
-            if not os.path.exists(f'./saves/id_{menus.game_id}'):
-                os.makedirs(f'./saves/id_{menus.game_id}')
-            # Save organism data
-            org_json_writer(all_organisms,
-                            f'./saves/id_{menus.game_id}/organism.json')
-            sim_json_writer(grid,
-                            f'./saves/id_{menus.game_id}/sims.json')
-            menus.save_game = False
-
-        if menus.paused:
-            menus.draw_pause_menu()
+        if menus.current_menu != 'none':
+            menus.display_menu()
+            # Check if game needs to be saved
+            if menus.save_game:
+                save_game(menus.game_id, all_organisms, grid)
+                menus.save_game = False
         else:
             # Move all the organisms
-            for organism in all_organisms:
-                organism.move(all_organisms)
+            # Move all the organisms, manage organism collisions
+            for moving_organism in all_organisms:
+                # if this organism is set to dead from previous move step,
+                # continue to next organism in loop
+                if not moving_organism.is_alive:
+                    continue
+
+                # save original organism, in case of collision with a same
+                # animal_type organism
+                original_organism = (moving_organism.x_pos,
+                                     moving_organism.y_pos)
+                moving_organism.move()
+
+                # check all other organisms for collisions
+                for check_organism in all_organisms:
+                    if not check_organism.is_alive:
+                        continue
+                    # check to avoid self-collision
+                    if moving_organism is check_organism:
+                        continue
+                    moving_org = pygame.Rect(moving_organism.x_pos,
+                                             moving_organism.y_pos,
+                                             X_PX_SIZE,
+                                             Y_PX_SIZE)
+                    check_org = pygame.Rect(check_organism.x_pos,
+                                            check_organism.y_pos,
+                                            X_PX_SIZE,
+                                            Y_PX_SIZE)
+
+                    if moving_org.colliderect(check_org):
+                        # manage herbivore and carnivore collisions
+                        if (
+                            moving_organism.animal_type == 1 and
+                            check_organism.animal_type == 2
+                        ):
+                            moving_organism.is_alive = False
+                            check_organism.days_since_fed = 0
+                            break
+                        if (
+                            moving_organism.animal_type == 2 and
+                            check_organism.animal_type == 1
+                        ):
+                            check_organism.is_alive = False
+                            moving_organism.days_since_fed = 0
+                            break
+                        # when same animal_type collides, revert back the
+                        # moving_organism to its original position
+                        else:
+                            (moving_organism.x_pos,
+                             moving_organism.y_pos) = original_organism
 
             # Clear screen. Important or else is just paints the screen
             # as the organism moves.
@@ -213,15 +175,6 @@ while pygame_active:
 
         # update the display for the new movement
         pygame.display.update()
-
-        # # print to show energy is decreasing with movement
-        # print(organism_test.energy)
-
-        # # Added some code to stop the sim when the organism runs out of
-        # energy
-        # # Take this out to run continuously
-        # if organism_test.energy == 0:
-        #     sim_running = False
 
         # Setting frame rate, lower setting seems to be easier to follow
         # Also if higher, the sim runs quickly due to energy consumption

@@ -1,17 +1,17 @@
 import random
 import pygame
+from constants import WINDOW_HEIGHT, WINDOW_WIDTH, X_PX_SIZE, Y_PX_SIZE
 
 
 class Organisms:
-    def __init__(self, x_pos, y_pos, window_h, window_w, org_height, org_width,
-                 animal_type, speed):
+    def __init__(self, x_pos, y_pos, animal_type, speed):
         # all values below should be adjusted post test simulations
         self.x_pos = x_pos
         self.y_pos = y_pos
-        self.org_height = org_height
-        self.org_width = org_width
-        self.window_h = window_h
-        self.window_w = window_w
+        self.org_height = Y_PX_SIZE
+        self.org_width = X_PX_SIZE
+        self.window_h = WINDOW_HEIGHT
+        self.window_w = WINDOW_WIDTH
         self.age = 0
         self.days_since_fed = 0
         self.energy_level = 10
@@ -26,22 +26,17 @@ class Organisms:
     # Using rectangle, but can update for a different shape or icon
     def insert_organism(self, window):
         """Function to insert organism with defined size, and grid position"""
-        if not self.is_alive:
-            return
+        if self.is_alive is True:
+            colors = [(51, 255, 51), (204, 0, 0)]
+            pygame.draw.rect(window,
+                             colors[self.animal_type-1],
+                             (self.x_pos, self.y_pos,
+                              self.org_height, self.org_width))
 
-        colors = [(51, 255, 51), (204, 0, 0)]
-        pygame.draw.rect(window,
-                         colors[self.animal_type-1],
-                         (self.x_pos, self.y_pos,
-                          self.org_height, self.org_width))
-
-    def move(self, all_organisms):
+    def move(self):
         """Finding random values for x and y values.
         -speed is max speed in left or down directions
         Reducing energy for each movement made"""
-        if not self.is_alive:
-            return
-
         self.x_pos = self.x_pos + self.org_width * random.randint(-self.speed,
                                                                   self.speed)
         self.y_pos = self.y_pos + self.org_height * random.randint(-self.speed,
@@ -52,35 +47,6 @@ class Organisms:
         # move beyond the boundaries of the screen
         self.x_pos = max(0, min(self.window_w - self.org_width, self.x_pos))
         self.y_pos = max(0, min(self.window_h - self.org_height, self.y_pos))
-
-        # Loop through all organisms and compare them to the
-        # organism object that is moving
-        for organism in all_organisms:
-            if organism != self:
-                # Create Pygame Rect objects to compare two orgs
-                # to make use of colliderect
-                # This is self, so organism that is moving
-                first_rect = pygame.Rect(self.x_pos,
-                                         self.y_pos,
-                                         self.org_width,
-                                         self.org_height)
-                # This is an organism from list being compared to moving org
-                second_rect = pygame.Rect(organism.x_pos,
-                                          organism.y_pos,
-                                          organism.org_width,
-                                          organism.org_height)
-                # Utilizing built in pygame function to detect
-                # when two object collide
-                if first_rect.colliderect(second_rect):
-                    # Compare animal types. 1 is Herb, 2 is Carn
-                    # This is checking if the herb hit a carn
-                    if self.animal_type == 1 and organism.animal_type == 2:
-                        print("Herb ran into Carn")
-                        self.is_alive = False
-                        # Check if carn hit a herb
-                    elif self.animal_type == 2 and organism.animal_type == 1:
-                        organism.is_alive = False
-                        print("Carn ran into Herb")
 
         # TO-DO: Code to ensure the new position is not occupied by another
         # organism. Needs data fetched from environment to check that here

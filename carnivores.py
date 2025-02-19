@@ -3,21 +3,19 @@ from organisms import Organisms
 
 
 class Carnivores(Organisms):
-    def __init__(self, x_pos, y_pos, window_h, window_w,
-                 org_height, org_width):
-        super().__init__(x_pos, y_pos, window_h, window_w,
-                         org_height, org_width, 2, 2)
+    def __init__(self, x_pos, y_pos):
+        super().__init__(x_pos, y_pos, 2, 2)
         self.maturation_age = 10
         self.offspring_chance = 0.05
         self.animal_type = 2
 
-    def move(self, all_organisms):
+    def move(self):
         """Carnivores-speicifc movement features.
 
         If new position overlaps with a Herbivore object, reset days_since_fed
         to 0 and delete instance of the consumed Herbivore object
         """
-        super().move(all_organisms)
+        super().move()
         # TO-DO: reset days_since_fed to 0 when new position overlaps with a
         # Herbivore object, remove consumed Herbivore object
 
