@@ -1,11 +1,9 @@
-import random
-
 import pygame
-
+import time
 from constants import WINDOW_HEIGHT, WINDOW_WIDTH, X_PX_SIZE, Y_PX_SIZE
 from data_manager import save_game, get_game_data
-from environments import Grassland, Tundra, Desert, Swamp, Forest
 from menu_handling import Menu_Handler
+from grid_creation import create_grid, insert_grid_envs
 
 # initializing imported module
 # This initializes pygame and fonts to display text
@@ -18,47 +16,16 @@ black = (0, 0, 0)
 
 # clock to set frame rate in simulation
 clock = pygame.time.Clock()
+# Keeping track of time, as we may need this for age
+start_time = time.time()
 
-# List of terrain types
-terrain_classes = [Grassland, Forest, Desert, Tundra, Swamp]
-
-# Setting size of the tiles organisms can move on. Same Size as organism
-grid_size = 20
-# Setting how many rows and columns
-rows = WINDOW_HEIGHT // grid_size
-cols = WINDOW_WIDTH // grid_size
-grid = []
-
-# Same code Michael provided but broken out
-# Create the grid with each location being assigned a terrain type
-# If we are loading a sim, probably a branch here
-# to set grid to value of saved info
-for _ in range(WINDOW_HEIGHT // Y_PX_SIZE):
-    row = []
-    for _ in range(WINDOW_WIDTH // X_PX_SIZE):
-        # Randomly select terrain to insert
-        # create instance of that terrain
-        # then append the terrain in the list
-        terrain = random.choice(terrain_classes)
-        terrain_instance = terrain()
-        row.append(terrain_instance)
-    grid.append(row)
+# Added a function to create grid and moved to its own file
+# This function returns grid and rows/cols sizes for insert grid
+grid = create_grid()
 
 # Create Pygame window
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("A-Life Sim Challenge")
-
-
-# Function to insert different envs for visual representation
-def insert_grid_envs():
-    for y in range(rows):
-        for x in range(cols):
-            terrain = grid[y][x]
-            pygame.draw.rect(window,
-                             terrain.color,
-                             (x * grid_size, y * grid_size,
-                              grid_size, grid_size))
-
 
 # Initalize menus
 menus = Menu_Handler(window)
@@ -167,7 +134,7 @@ while pygame_active:
             # as the organism moves.
             window.fill(black)
             # Code to insert grid, without moving it constantly
-            insert_grid_envs()
+            insert_grid_envs(window)
             pygame.display.flip()
             # Inserting organism on screen in new position
             for organism in all_organisms:
@@ -175,7 +142,12 @@ while pygame_active:
 
         # update the display for the new movement
         pygame.display.update()
+        end_time = time.time()
 
         # Setting frame rate, lower setting seems to be easier to follow
         # Also if higher, the sim runs quickly due to energy consumption
         clock.tick(5*menus.speed)
+        # Printing out time out to 2 decimal placese
+        elapsed_time = end_time - start_time
+        formatted_time = "{:.2f}".format(elapsed_time)
+        print(formatted_time)
