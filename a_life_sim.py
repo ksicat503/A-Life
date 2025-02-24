@@ -2,12 +2,14 @@ import pygame
 import os
 # import numpy as np
 import random
+import copy
 from test_organism import Organism
 from carnivores import Carnivores
 from herbivores import Herbivores
 from menu_handling import Menu_Handler
 from json_writer import org_json_writer, json_reader, sim_json_writer
 from environments import Grassland, Tundra, Desert, Ocean, Swamp, Forest
+from collision_handling import handle_collisions
 
 # initializing imported module
 # This initializes pygame and fonts to display text
@@ -175,7 +177,7 @@ while pygame_active:
         if menus.paused:
             menus.draw_pause_menu()
         else:
-            # Move all the organisms, manage organism collisions
+            # Move all the organisms while managing organism collisions
             for moving_organism in all_organisms:
                 # if this organism is set to dead from previous move step,
                 # continue to next organism in loop
@@ -184,41 +186,46 @@ while pygame_active:
 
                 # save original organism, in case of collision with a same
                 # animal_type organism
-                original_organism = moving_organism.rect.copy()
+                original_pos = (moving_organism.x_pos, moving_organism.y_pos)
+
+                # move the organism
                 moving_organism.move()
 
-                # check all other organisms for collisions
-                for check_organism in all_organisms:
-                    if not check_organism.is_alive:
-                        continue
-                    # check to avoid self-collision
-                    if moving_organism is check_organism:
-                        continue
-                    if moving_organism.rect.colliderect(check_organism.rect):
-                        # manage herbivore and carnivore collisions
-                        if (
-                            moving_organism.animal_type == 1 and
-                            check_organism.animal_type == 2
-                        ):
-                            moving_organism.is_alive = False
-                            check_organism.days_since_fed = 0
-                            break
-                        if (
-                            moving_organism.animal_type == 2 and
-                            check_organism.animal_type == 1
-                        ):
-                            check_organism.is_alive = False
-                            moving_organism.days_since_fed = 0
-                            break
-                        # when same animal_type collides, revert back the
-                        # moving_organism to its original position
-                        else:
-                            moving_organism.rect = original_organism
+                # check for collision, if collided, break and check the next
+                # organism that will be moving
+                did_collide = handle_collisions(
+                    moving_organism, all_organisms, original_pos)
 
-            # remove any organisms that are no longer alive
-            for organism in all_organisms:
-                if organism.is_alive is False:
-                    all_organisms.remove(organism)
+                if did_collide:
+                    break
+
+            # Chance of all organisms to reproduce
+            for reproducing_organism in all_organisms:
+
+                # if successful at reproducing, create a deep copy of it
+                if reproducing_organism.reproduce():
+                    new_organism = copy.deepcopy(reproducing_organism)
+
+                    # reset some parameters to default for new organism
+                    new_organism.age = 0
+                    new_organism.days_since_fed = 0
+                    new_organism.energy_level = 10
+
+                    # move the organism so it does not overlap with the parent
+                    new_organism.move()
+
+                    # save original organism, in case of collision with a same
+                    # animal_type organism, check for collision
+                    original_pos = (new_organism.x_pos, new_organism.y_pos)
+                    did_collide = handle_collisions(
+                        new_organism, all_organisms, original_pos)
+
+                    # if not collided, add new spawn to list of all organisms,
+                    # else delete the object
+                    if not did_collide:
+                        all_organisms.append(new_organism)
+                    else:
+                        del new_organism
 
             # Clear screen. Important or else is just paints the screen
             # as the organism moves.

@@ -12,29 +12,20 @@ class Herbivores(Organisms):
         self.animal_type = 1
 
     def move(self):
-        """Herbivores-speicifc movement features.
-
-        If occupying grassland, reset days_since_fed to 0.
-        """
+        """Herbivores-speicifc movement features."""
         super().move()
-        # TO-DO: reset days_since_fed to 0 if new position overlaps with
-        # grassland unit in the environment
 
     def reproduce(self):
         """Random chance of offspring reproduction.
 
-        If Herbivore age is higher than maturation_age, create a new instance
-        of Herbivore object next to it.
+        If age-mature and enough energy, random chance of returning True
         """
         if not self.is_alive:
             return
 
         if (self.age > self.maturation_age and
-                self.offspring_chance > random.random()):
-            new_x_pos = self.x_pos + self.org_width
-            if new_x_pos > self.window_w:
-                new_x_pos = self.x_pos - self.org_width
-            # TO-DO: if new organism instance location is already occupied,
-            # return without reproducing
-            return Herbivores(new_x_pos, self.y_pos, self.window_h,
-                              self.window_w, self.org_height, self.org_width)
+                self.offspring_chance > random.random() and
+                self.energy_level > 50):
+            return True
+        else:
+            return False
