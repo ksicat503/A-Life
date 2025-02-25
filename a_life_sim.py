@@ -26,6 +26,7 @@ start_time = time.time()
 # This function returns grid and rows/cols sizes for insert grid
 grid = create_grid()
 
+
 # Create Pygame window
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("A-Life Sim Challenge")
@@ -70,7 +71,6 @@ while pygame_active:
             if event.type == pygame.QUIT:
                 menus.sim_active = False
                 pygame_active = False
-
                 # Should we save here? or only save when the user presses
                 # the save button in the pause menu?
                 save_game(menus.game_id, all_organisms, grid)

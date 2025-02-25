@@ -1,5 +1,7 @@
 import random
 import pygame
+from constants import WINDOW_HEIGHT, WINDOW_WIDTH, X_PX_SIZE, Y_PX_SIZE
+
 
 black = (0, 0, 0)
 
@@ -8,15 +10,14 @@ black = (0, 0, 0)
 # Can discuss or use one class for all and randomly set some values
 # If using one class, will need some unique identifier most likely
 class Organism:
-    def __init__(self, x_pos, y_pos, window_h, window_w,
-                 org_height, org_width):
+    def __init__(self, x_pos, y_pos):
         # all values below should be adjusted post test simulations
         self.x_pos = x_pos
         self.y_pos = y_pos
-        self.org_height = org_height
-        self.org_width = org_width
-        self.window_h = window_h
-        self.window_w = window_w
+        self.org_height = Y_PX_SIZE
+        self.org_width = X_PX_SIZE
+        self.window_h = WINDOW_HEIGHT
+        self.window_w = WINDOW_WIDTH
         self.age = 0
         self.days_since_fed = 0
         self.energy_level = 3

@@ -1,10 +1,10 @@
 import os
+import random
 
 from carnivores import Carnivores
 from herbivores import Herbivores
 from json_writer import org_json_writer, json_reader, sim_json_writer
 from test_organism import Organism
-import random
 from constants import WINDOW_HEIGHT, WINDOW_WIDTH, GRID_S
 
 
