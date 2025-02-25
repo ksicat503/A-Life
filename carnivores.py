@@ -10,30 +10,20 @@ class Carnivores(Organisms):
         self.animal_type = 2
 
     def move(self):
-        """Carnivores-speicifc movement features.
-
-        If new position overlaps with a Herbivore object, reset days_since_fed
-        to 0 and delete instance of the consumed Herbivore object
-        """
+        """Carnivores-speicifc movement features."""
         super().move()
-        # TO-DO: reset days_since_fed to 0 when new position overlaps with a
-        # Herbivore object, remove consumed Herbivore object
 
     def reproduce(self):
         """Random chance of offspring reproduction.
 
-        If Carnivore age is higher than maturation_age, create a new instance
-        of Carnivore object next to it.
+        If age-mature and enough energy, random chance of returning True
         """
         if not self.is_alive:
             return
 
         if (self.age > self.maturation_age and
-                self.offspring_chance > random.random()):
-            new_x_pos = self.x_pos + self.org_width
-            if new_x_pos > self.window_w:
-                new_x_pos = self.x_pos - self.org_width
-            # TO-DO: if new organism instance location is already occupied,
-            # return without reproducing
-            return Carnivores(new_x_pos, self.y_pos, self.window_h,
-                              self.window_w, self.org_height, self.org_width)
+                self.offspring_chance > random.random() and
+                self.energy_level > 50):
+            return True
+        else:
+            return False

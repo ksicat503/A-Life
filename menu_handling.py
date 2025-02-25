@@ -3,9 +3,7 @@ SOURCES
 Background Image: Generated using Gemini 2.0
 """
 import os
-
 import pygame
-
 from ui_loader import load_ui_components
 
 

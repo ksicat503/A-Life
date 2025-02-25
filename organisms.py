@@ -48,9 +48,6 @@ class Organisms:
         self.x_pos = max(0, min(self.window_w - self.org_width, self.x_pos))
         self.y_pos = max(0, min(self.window_h - self.org_height, self.y_pos))
 
-        # TO-DO: Code to ensure the new position is not occupied by another
-        # organism. Needs data fetched from environment to check that here
-
     def survival_chance(self):
         """Random survival chance. *** ADD DISASTER-SURVIVAL CHANCE HERE???***
 
