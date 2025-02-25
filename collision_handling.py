@@ -1,8 +1,9 @@
 import pygame
-from a_life_sim import X_PX_SIZE, Y_PX_SIZE
+X_PX_SIZE = 20
+Y_PX_SIZE = 20
 
 
-def collision_check(moving_organism, all_organisms, original_pos):
+def handle_collisions(moving_organism, all_organisms, original_pos):
     """
     Checks moving_organism against all_organisms
 

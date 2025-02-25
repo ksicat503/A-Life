@@ -97,10 +97,6 @@ while pygame_active:
         if menus.load_game is False:
             # Will need to update this later
             all_organisms = [
-                Organism(x_pos=200, y_pos=200,
-                         window_h=window_height, window_w=window_width,
-                         org_height=Y_PX_SIZE, org_width=X_PX_SIZE
-                         ),
                 Herbivores(x_pos=300, y_pos=500,
                            window_h=window_height, window_w=window_width,
                            org_height=Y_PX_SIZE, org_width=X_PX_SIZE
