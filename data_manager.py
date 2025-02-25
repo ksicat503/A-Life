@@ -3,6 +3,7 @@ import random
 
 from carnivores import Carnivores
 from herbivores import Herbivores
+from grid_creation import create_grid
 from json_writer import org_json_writer, json_reader, sim_json_writer
 from test_organism import Organism
 from constants import WINDOW_HEIGHT, WINDOW_WIDTH, GRID_S
@@ -26,12 +27,12 @@ def create_folders(game_id):
 def get_game_data(game_id=None):
     """
     Returns organism and grid data
-    ***Need to implement grid data***
     """
     if game_id is None:
-        return [get_random_starting_organisms(), None]
+        return [get_random_starting_organisms(), create_grid()]
     else:
-        return [load_organisms(game_id), None]
+        # Need to implement loading in saved grid data
+        return [load_organisms(game_id), create_grid()]
 
 
 def get_random_starting_organisms():

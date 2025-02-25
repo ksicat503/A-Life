@@ -4,7 +4,7 @@ import pygame
 from constants import WINDOW_HEIGHT, WINDOW_WIDTH
 from data_manager import save_game, get_game_data
 from menu_handling import Menu_Handler
-from grid_creation import create_grid, insert_grid_envs
+from grid_creation import insert_grid_envs
 from collision_handling import handle_collisions
 
 
@@ -19,13 +19,6 @@ black = (0, 0, 0)
 
 # clock to set frame rate in simulation
 clock = pygame.time.Clock()
-# Keeping track of time, as we may need this for age
-start_time = time.time()
-
-# Added a function to create grid and moved to its own file
-# This function returns grid and rows/cols sizes for insert grid
-grid = create_grid()
-
 
 # Create Pygame window
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -56,9 +49,10 @@ while pygame_active:
             data = get_game_data(menus.game_id)
 
         all_organisms = data[0]
-        # Need to implement loading grid in get_game_data func
-        # grid = data[1]
+        grid = data[1]
         menus.set_organism_data(all_organisms)
+        # Keeping track of time, as we may need this for age
+        start_time = time.time()
 
     while menus.sim_active:
         # Set up event for when the user quits out of the screen
@@ -136,7 +130,7 @@ while pygame_active:
             # as the organism moves.
             window.fill(black)
             # Code to insert grid, without moving it constantly
-            insert_grid_envs(window)
+            insert_grid_envs(window, grid)
             pygame.display.flip()
             # Inserting organism on screen in new position
             for organism in all_organisms:

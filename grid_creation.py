@@ -9,13 +9,13 @@ terrain_classes = [Grassland, Forest, Desert, Tundra, Swamp]
 # # Setting how many rows and columns using constans
 rows = WINDOW_HEIGHT // GRID_S
 cols = WINDOW_WIDTH // GRID_S
-grid = []
 
 
 def create_grid():
     """Function to create a grid with a chance of placing
     like terrain next to one another.
     As this moves left to right, a neighbor is either directly left or above"""
+    grid = []
     # Loop through each row, top to bottom
     for y in range(rows):
         row = []
@@ -40,7 +40,7 @@ def create_grid():
     return grid
 
 
-def insert_grid_envs(window):
+def insert_grid_envs(window, grid):
     """Function to insert the previously created grid
     within the viewing window"""
     for y in range(rows):
