@@ -222,7 +222,7 @@ class Menu_Handler:
             self.window, f"Herbivore : {self.stats['h_death_by_consumed']}")
         self.ui_components['text']['body_2_2_2'].draw(
             self.window, f"Carnivore : {self.stats['c_death_by_consumed']}")
-        
+
         if self.ui_components['buttons']['back_stats'].draw(
              self.window, self.can_click):
             self.current_menu = 'pause'
@@ -269,7 +269,7 @@ class Menu_Handler:
         self.ui_components['text']['body_1_6'].draw(
             self.window,
             f"Offspring Chance: {self.organism.offspring_chance * 100}%")
-        
+
         if self.ui_components['buttons']['resume_stat'].draw(
              self.window, self.can_click):
             self.current_menu = 'none'
