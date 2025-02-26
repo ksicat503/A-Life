@@ -4,6 +4,100 @@ from carnivores import Carnivores
 from herbivores import Herbivores
 
 
+def determine_movement(organism, grid):
+    """Determines if an organism's movement based on factors such as
+    the value returned from search_food or flee. If coordinates are
+    returned by these functions, then organism will lean towards
+    moving in that direction. If not, organism will move at random.
+
+    Args:
+        organism (_type_): Organism object of interest
+        grid (_type_): environment grid we are working with
+    """
+
+    new_x = organism.x_pos
+    new_y = organism.y_pos
+    if isinstance(organism, Carnivores):
+        prey_positions = search_food(organism, grid)
+
+        if prey_positions:
+            # 60% chance for predator to move towards prey
+            if random.random() < 0.6:
+                prey_x, prey_y = random.choice(prey_positions)
+
+                # Calculate distance to prey
+
+                dx = prey_x - organism.x_pos
+                dy = prey_y - organism.y_pos
+
+                # For cases prey is 2 tiles away, 40% chance that
+                # predator only moves 1 tile
+                if abs(dx) == 2 or abs(dy) == 2:
+                    if random.random() < 0.4:
+                        dx = dx // 2
+                        dy = dy // 2
+
+                new_x = organism.x_pos
+                new_y = organism.y_pos
+
+    # Things to consider:
+    # 1. When fleeing and multiple predators are around, this implementation
+    #       will choose a random predator to run from. This means there is a
+    #       chance that the Organism can run into some of the other predators.
+    #       Will have to discuss these collisions, I assume they just die.
+    # 2. Fleeing movement is still random, it just makes sure they go in
+    #       a direction away.
+    # 3. How to deal with collisions even when move randomly (this might
+    # be the case in diagonal movement)
+    elif isinstance(organism, Herbivores):
+        predator_position = flee(organism, grid)
+
+        # If predators sensed nearby using flee()
+        if predator_position:
+            # 50% chance of fleeing
+            pred_x, pred_y = random.choice(predator_position)
+
+            flee_dx = organism.x_pos - pred_x
+            flee_dy = organism.y_pos - pred_y
+
+            # Normalize direction (-1, 0, 1)
+            flee_dx = flee_dx // abs(flee_dx) if flee_dx != 0 else 0
+            flee_dy = flee_dy // abs(flee_dy) if flee_dy != 0 else 0
+
+            flee_distance = random.choice([1, 2])
+
+            # Calculate new position using normalized direction
+            new_x = organism.x_pos + (flee_dx * flee_distance)
+            new_y = organism.y_pos + (flee_dy * flee_distance)
+
+    # Random movement if no prey or predators were detected
+    if new_x == organism.x_pos and new_y == organism.y_pos:
+        total_movement = random.choice([1, 2])
+
+        # ***Thinking about how to make diagonal movement 1 tile
+        if total_movement == 2:
+            move_x = random.choice([2, 1, 0])
+            move_y = 2 - move_x
+        else:
+            move_x = random.choice([1, 0])
+            move_y = 1 - move_x
+
+        # Assign direction randomly (-1, 1)
+        rand_dx = move_x * random.choice([-1, 1])
+        rand_dy = move_y * random.choice([-1, 1])
+
+        new_x = organism.x_pos + rand_dx
+        new_y = organism.y_pos + rand_dy
+
+    # Ensures movement is within grid bounds**
+    new_x = max(0, min(len(grid) - 1, new_x))
+    new_y = max(0, min(len(grid[0]) - 1, new_y))
+
+    # Move organism
+    organism.move(new_x, new_y)
+    pass
+
+
 def search_food(carnivore, grid):
     """Carnivore searches for other organisms, right now herbivores
     for food. Uses greedy search and then moves the shortest
@@ -22,7 +116,7 @@ def search_food(carnivore, grid):
     3. Is a hunt always successful, energy levels, can carnivore
         hunt carnivore?
     """
-    # prey_positions stores any positions with possible food
+    # prey_positions stores any coordinate with possible food
     sense_radius = 2
     prey_positions = []
 
@@ -40,8 +134,6 @@ def search_food(carnivore, grid):
                 for organism in tile.inhabitants:
                     if isinstance(organism, Herbivores):
                         prey_positions.append((new_x, new_y))
-
-    # if prey_positions:
 
     return prey_positions
 
