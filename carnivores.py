@@ -8,6 +8,7 @@ class Carnivores(Organisms):
         self.maturation_age = 10
         self.offspring_chance = 0.05
         self.animal_type = 2
+        self.consumed_count = 0
 
     def move(self):
         """Carnivores-speicifc movement features."""

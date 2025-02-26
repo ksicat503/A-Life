@@ -19,6 +19,7 @@ class Organisms:
         self.is_alive = True
         self.speed = speed
         self.animal_type = animal_type
+        self.death_type = None  # 1 for eatten and 2 for starved
 
     def __del__(self):
         return

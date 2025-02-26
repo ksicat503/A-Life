@@ -60,6 +60,11 @@ while pygame_active:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     menus.current_menu = 'pause'
+            elif (menus.current_menu == 'none' and
+                  event.type == pygame.MOUSEBUTTONUP):
+                if menus.set_organism(event.pos):
+                    menus.current_menu = 'individual_organism'
+
             # if event is of type quit then
             # set running bool to false
             if event.type == pygame.QUIT:

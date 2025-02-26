@@ -27,6 +27,7 @@ class Menu_Handler:
         self.save_game = False
         self.novel_feature = True
         self.organisms = None
+        self.organism = None
         self.speed = self.speed_vals[0]
         self.stats = {}
 
@@ -54,6 +55,8 @@ class Menu_Handler:
             self.draw_pause_menu()
         elif self.current_menu == 'stats':
             self.draw_stat_menu()
+        elif self.current_menu == 'individual_organism':
+            self.draw_single_org_stat_menu()
 
     def draw_main_menu(self):
         """ Displays the main menu """
@@ -175,18 +178,22 @@ class Menu_Handler:
             self.can_click = False
 
     def calculate_stats(self):
-        self.stats['h_death_by_hunger'] = 0
-        self.stats['c_death_by_hunger'] = 0
-        self.stats['h_death_by_consumed'] = 0
-        self.stats['c_death_by_consumed'] = 0
-        self.stats['h_count'] = 0
-        self.stats['c_count'] = 0
+        """ Calculates stats for the current sim """
+        stat_keys = ['h_alive_count', 'h_death_by_hunger',
+                     'h_death_by_consumed', 'c_alive_count',
+                     'c_death_by_hunger', 'c_death_by_consumed']
+        self.stats = {key: 0 for key in stat_keys}
+        animal_map = {1: 'h', 2: 'c'}
+        death_map = {1: 'death_by_consumed', 2: 'death_by_hunger'}
 
         for organism in self.organisms:
-            if organism.animal_type == 1:
-                self.stats['h_count'] += 1
-            elif organism.animal_type == 2:
-                self.stats['c_count'] += 1
+            animal_type = animal_map[organism.animal_type]
+            if organism.is_alive:
+                self.stats[f"{animal_type}_alive_count"] += 1
+            else:
+                self.stats[
+                    f"{animal_type}_{death_map[organism.death_type]}"
+                    ] += 1
 
     def draw_stat_menu(self):
         """ Displays Stats for the organisms"""
@@ -199,9 +206,9 @@ class Menu_Handler:
         self.ui_components['text']['subtitle_1'].draw(
             self.window, "Population")
         self.ui_components['text']['body_1_1'].draw(
-            self.window, f"Herbivore : {self.stats['h_count']}")
+            self.window, f"Herbivore : {self.stats['h_alive_count']}")
         self.ui_components['text']['body_1_2'].draw(
-            self.window, f"Carnivore : {self.stats['c_count']}")
+            self.window, f"Carnivore : {self.stats['c_alive_count']}")
         self.ui_components['text']['subtitle_2'].draw(self.window, "Deaths")
         self.ui_components['text']['subtitle_2_1'].draw(
             self.window, "By Hunger")
@@ -215,3 +222,55 @@ class Menu_Handler:
             self.window, f"Herbivore : {self.stats['h_death_by_consumed']}")
         self.ui_components['text']['body_2_2_2'].draw(
             self.window, f"Carnivore : {self.stats['c_death_by_consumed']}")
+        
+        if self.ui_components['buttons']['back_stats'].draw(
+             self.window, self.can_click):
+            self.current_menu = 'pause'
+            self.can_click = False
+
+    def set_organism(self, position):
+        """ Determines what organism was clicked """
+        for organism in self.organisms:
+            if organism.is_alive:
+                if (organism.x_pos < position[0] <
+                   organism.x_pos + organism.org_width and
+                   organism.y_pos < position[1] <
+                   organism.y_pos + organism.org_height):
+                    self.organism = organism
+                    return True
+        return False
+
+    def draw_single_org_stat_menu(self):
+        """ Draws stat page for single organism """
+        print('test')
+        # Draws background
+        self.window.blit(self.ui_components['background'], (0, 0))
+
+        if self.organism.animal_type == 1:
+            self.ui_components['text']['title'].draw(
+                self.window, "Herbivore instance")
+        else:
+            self.ui_components['text']['title'].draw(
+                self.window, "Carnivore instance")
+            self.ui_components['text']['body_1_7'].draw(
+                self.window,
+                f"Amount of animals consumed: {self.organism.consumed_count}")
+
+        self.ui_components['text']['body_1_1'].draw(
+            self.window, f"Energy Level: {self.organism.energy_level}")
+        self.ui_components['text']['body_1_2'].draw(
+            self.window, f"Days Since Fed: {self.organism.days_since_fed}")
+        self.ui_components['text']['body_1_3'].draw(
+            self.window, f"Current Age: {self.organism.age}")
+        self.ui_components['text']['body_1_4'].draw(
+            self.window, f"Life Expectancy: {self.organism.life_expectancy}")
+        self.ui_components['text']['body_1_5'].draw(
+            self.window, f"Maturation Age: {self.organism.maturation_age}")
+        self.ui_components['text']['body_1_6'].draw(
+            self.window,
+            f"Offspring Chance: {self.organism.offspring_chance * 100}%")
+        
+        if self.ui_components['buttons']['resume_stat'].draw(
+             self.window, self.can_click):
+            self.current_menu = 'none'
+            self.organism = None

@@ -23,6 +23,11 @@ def load_ui_components():
     components['text']['subtitle_1'] = Text(WINDOW_WIDTH//2, 250, 40)
     components['text']['body_1_1'] = Text(WINDOW_WIDTH//6, 300, 25, False)
     components['text']['body_1_2'] = Text(WINDOW_WIDTH//6, 325, 25, False)
+    components['text']['body_1_3'] = Text(WINDOW_WIDTH//6, 350, 25, False)
+    components['text']['body_1_4'] = Text(WINDOW_WIDTH//6, 375, 25, False)
+    components['text']['body_1_5'] = Text(WINDOW_WIDTH//6, 400, 25, False)
+    components['text']['body_1_6'] = Text(WINDOW_WIDTH//6, 425, 25, False)
+    components['text']['body_1_7'] = Text(WINDOW_WIDTH//6, 450, 25, False)
     components['text']['subtitle_2'] = Text(WINDOW_WIDTH//2, 375, 40)
     components['text']['subtitle_2_1'] = Text(WINDOW_WIDTH//6, 425, 30, False)
     components['text']['body_2_1_1'] = Text(WINDOW_WIDTH//6, 475, 25, False)
@@ -112,6 +117,16 @@ def load_ui_components():
     components['buttons']['quit'] = Button(
             WINDOW_WIDTH // 2, 700,
             pygame.image.load('./assets/quit_button.png').convert_alpha(),
+            0.7
+        )
+    components['buttons']['back_stats'] = Button(
+        WINDOW_WIDTH // 2, 700,
+        pygame.image.load('./assets/back_button.png').convert_alpha(),
+        0.7
+    )
+    components['buttons']['resume_stat'] = Button(
+            WINDOW_WIDTH // 2, 600,
+            pygame.image.load('./assets/resume_button.png').convert_alpha(),
             0.7
         )
     return components
