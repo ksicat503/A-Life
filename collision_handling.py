@@ -1,6 +1,5 @@
 import pygame
-X_PX_SIZE = 20
-Y_PX_SIZE = 20
+from constants import X_PX_SIZE, Y_PX_SIZE
 
 
 def handle_collisions(moving_organism, all_organisms, original_pos):
@@ -39,14 +38,18 @@ def handle_collisions(moving_organism, all_organisms, original_pos):
                 check_organism.animal_type == 2
             ):
                 moving_organism.is_alive = False
+                moving_organism.death_type = 1
                 check_organism.days_since_fed = 0
+                check_organism.consumed_count += 1
                 return True
             if (
                 moving_organism.animal_type == 2 and
                 check_organism.animal_type == 1
             ):
                 check_organism.is_alive = False
+                check_organism.death_type = 1
                 moving_organism.days_since_fed = 0
+                moving_organism.consumed_count += 1
                 return True
             # when same animal_type collides, revert back the
             # moving_organism to its original position

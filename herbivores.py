@@ -3,10 +3,8 @@ from organisms import Organisms
 
 
 class Herbivores(Organisms):
-    def __init__(self, x_pos, y_pos, window_h, window_w,
-                 org_height, org_width):
-        super().__init__(x_pos, y_pos, window_h, window_w,
-                         org_height, org_width, 1, 1)
+    def __init__(self, x_pos, y_pos):
+        super().__init__(x_pos, y_pos, 1, 1)
         self.maturation_age = 10
         self.offspring_chance = 0.05
         self.animal_type = 1
@@ -24,8 +22,8 @@ class Herbivores(Organisms):
             return
 
         if (self.age > self.maturation_age and
-                self.offspring_chance > random.random() and
-                self.energy_level > 50):
+           self.offspring_chance > random.random() and
+           self.energy_level > 50):
             return True
         else:
             return False

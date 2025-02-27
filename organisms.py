@@ -1,17 +1,17 @@
 import random
 import pygame
+from constants import WINDOW_HEIGHT, WINDOW_WIDTH, X_PX_SIZE, Y_PX_SIZE
 
 
 class Organisms:
-    def __init__(self, x_pos, y_pos, window_h, window_w, org_height, org_width,
-                 animal_type, speed):
+    def __init__(self, x_pos, y_pos, animal_type, speed):
         # all values below should be adjusted post test simulations
         self.x_pos = x_pos
         self.y_pos = y_pos
-        self.org_height = org_height
-        self.org_width = org_width
-        self.window_h = window_h
-        self.window_w = window_w
+        self.org_height = Y_PX_SIZE
+        self.org_width = X_PX_SIZE
+        self.window_h = WINDOW_HEIGHT
+        self.window_w = WINDOW_WIDTH
         self.age = 0
         self.days_since_fed = 0
         self.energy_level = 10
@@ -19,6 +19,7 @@ class Organisms:
         self.is_alive = True
         self.speed = speed
         self.animal_type = animal_type
+        self.death_type = None  # 1 for eatten and 2 for starved
 
     def __del__(self):
         return
@@ -26,11 +27,12 @@ class Organisms:
     # Using rectangle, but can update for a different shape or icon
     def insert_organism(self, window):
         """Function to insert organism with defined size, and grid position"""
-        colors = [(51, 255, 51), (204, 0, 0)]
-        pygame.draw.rect(window,
-                         colors[self.animal_type-1],
-                         (self.x_pos, self.y_pos,
-                          self.org_height, self.org_width))
+        if self.is_alive is True:
+            colors = [(51, 255, 51), (204, 0, 0)]
+            pygame.draw.rect(window,
+                             colors[self.animal_type-1],
+                             (self.x_pos, self.y_pos,
+                              self.org_height, self.org_width))
 
     def move(self):
         """Finding random values for x and y values.

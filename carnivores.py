@@ -3,13 +3,12 @@ from organisms import Organisms
 
 
 class Carnivores(Organisms):
-    def __init__(self, x_pos, y_pos, window_h, window_w,
-                 org_height, org_width):
-        super().__init__(x_pos, y_pos, window_h, window_w,
-                         org_height, org_width, 2, 2)
+    def __init__(self, x_pos, y_pos):
+        super().__init__(x_pos, y_pos, 2, 2)
         self.maturation_age = 10
         self.offspring_chance = 0.05
         self.animal_type = 2
+        self.consumed_count = 0
 
     def move(self):
         """Carnivores-speicifc movement features."""
