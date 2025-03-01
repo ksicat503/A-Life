@@ -1,7 +1,7 @@
 import copy
 import time
 import pygame
-from constants import WINDOW_HEIGHT, WINDOW_WIDTH
+from constants import WINDOW_HEIGHT, WINDOW_WIDTH, GRID_S
 from data_manager import save_game, get_game_data
 from menu_handling import Menu_Handler
 from grid_creation import insert_grid_envs
@@ -94,6 +94,7 @@ while pygame_active:
 
                 # move the organism
                 moving_organism.move()
+                # determine_movement(moving_organism, grid)
 
                 # check for collision, if collided, break and check the next
                 # organism that will be moving
@@ -102,6 +103,19 @@ while pygame_active:
 
                 if did_collide:
                     break
+
+            for organism in all_organisms:
+                y, x = organism.y_pos, organism.x_pos
+                grid_tile = grid[y//GRID_S][x//GRID_S]
+                if organism.animal_type == 1:
+                    grid_tile.__dict__["herb_food"] -= 1
+                    organism.energy_level += 1.2
+                    # print(organism.__dict__)
+                else:
+                    grid_tile.__dict__["carn_food"] -= 1
+                    organism.energy_level += 1.2
+                #     print(organism.__dict__)
+                # print(grid_tile.__dict__)
 
             # Chance of all organisms to reproduce
             for reproducing_organism in all_organisms:
@@ -128,6 +142,7 @@ while pygame_active:
                     # else delete the object
                     if not did_collide:
                         all_organisms.append(new_organism)
+                        print("reproduce")
                     else:
                         del new_organism
 
@@ -140,6 +155,7 @@ while pygame_active:
             # Inserting organism on screen in new position
             for organism in all_organisms:
                 organism.insert_organism(window)
+                organism.age += .02
 
         # update the display for the new movement
         pygame.display.update()
@@ -152,4 +168,4 @@ while pygame_active:
         # Printing out time out to 2 decimal placese
         elapsed_time = end_time - start_time
         formatted_time = "{:.2f}".format(elapsed_time)
-        print(formatted_time)
+        # print(formatted_time)

@@ -3,9 +3,10 @@ from organisms import Organisms
 
 
 class Carnivores(Organisms):
-    def __init__(self, x_pos, y_pos):
-        super().__init__(x_pos, y_pos, 2, 2)
-        self.maturation_age = 10
+    def __init__(self, name, x_pos, y_pos):
+        super().__init__(name, x_pos, y_pos, 2, 2)
+        self.name = f"carn{name}"
+        self.maturation_age = 15
         self.offspring_chance = 0.05
         self.animal_type = 2
         self.consumed_count = 0
@@ -24,7 +25,8 @@ class Carnivores(Organisms):
 
         if (self.age > self.maturation_age and
                 self.offspring_chance > random.random() and
-                self.energy_level > 50):
+                self.energy_level > 80):
+            self.energy_level -= 60
             return True
         else:
             return False

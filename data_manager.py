@@ -39,7 +39,7 @@ def get_random_starting_organisms():
     """Randomly place a number of herbivores between 8-15
     and add 1/3 that number of carnivores."""
     num_herbivores = random.randint(8, 16)
-    num_carnivores = max(1, num_herbivores // 2)
+    num_carnivores = max(1, num_herbivores // 3)
     rows = WINDOW_WIDTH // GRID_S
     cols = WINDOW_HEIGHT // GRID_S
 
@@ -48,14 +48,16 @@ def get_random_starting_organisms():
     for _ in range(num_herbivores):
         row = random.randint(0, rows) * GRID_S
         col = random.randint(0, cols) * GRID_S
-        all_organisms.append(Herbivores(row,
+        all_organisms.append(Herbivores(_,
+                                        row,
                                         col
                                         ))
 
     for _ in range(num_carnivores):
         row = random.randint(0, rows) * GRID_S
         col = random.randint(0, cols) * GRID_S
-        all_organisms.append(Carnivores(row,
+        all_organisms.append(Carnivores(_,
+                                        row,
                                         col
                                         ))
 

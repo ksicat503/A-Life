@@ -72,30 +72,30 @@ def determine_movement(organism, grid):
 
     # Random movement if no prey or predators were detected
     if new_x == organism.x_pos and new_y == organism.y_pos:
-        total_movement = random.choice([1, 2])
+        #     total_movement = random.choice([1, 2])
 
-        # ***Thinking about how to make diagonal movement 1 tile
-        if total_movement == 2:
-            move_x = random.choice([2, 1, 0])
-            move_y = 2 - move_x
-        else:
-            move_x = random.choice([1, 0])
-            move_y = 1 - move_x
+        #     # ***Thinking about how to make diagonal movement 1 tile
+        #     if total_movement == 2:
+        #         move_x = random.choice([2, 1, 0])
+        #         move_y = 2 - move_x
+        #     else:
+        #         move_x = random.choice([1, 0])
+        #         move_y = 1 - move_x
 
-        # Assign direction randomly (-1, 1)
-        rand_dx = move_x * random.choice([-1, 1])
-        rand_dy = move_y * random.choice([-1, 1])
+        #     # Assign direction randomly (-1, 1)
+        #     rand_dx = move_x * random.choice([-1, 1])
+        #     rand_dy = move_y * random.choice([-1, 1])
 
-        new_x = organism.x_pos + rand_dx
-        new_y = organism.y_pos + rand_dy
+        #     new_x = organism.x_pos + rand_dx
+        #     new_y = organism.y_pos + rand_dy
 
-    # Ensures movement is within grid bounds**
-    new_x = max(0, min(len(grid) - 1, new_x))
-    new_y = max(0, min(len(grid[0]) - 1, new_y))
+        # # Ensures movement is within grid bounds**
+        # new_x = max(0, min(len(grid) - 1, new_x))
+        # new_y = max(0, min(len(grid[0]) - 1, new_y))
 
-    # Move organism
-    organism.move(new_x, new_y)
-    pass
+        # Move organism
+        organism.move()
+    # pass
 
 
 def search_food(carnivore, grid):
@@ -134,6 +134,7 @@ def search_food(carnivore, grid):
                 for organism in tile.inhabitants:
                     if isinstance(organism, Herbivores):
                         prey_positions.append((new_x, new_y))
+                        print("hunting")
 
     return prey_positions
 
@@ -166,88 +167,89 @@ def flee(herbivore, grid):
                 for organism in tile.inhabitants:
                     if isinstance(organism, Carnivores):
                         predator_positions.append((new_x, new_y))
+                        print("fleeing")
     # TO IMPLEMENT: FLEEING DYNAMICS AND WHERE
     return predator_positions
 
 
-def print_grid(grid):
-    """Print grid for visualization"""
-    environment_symbols = {
-        "Grassland": "G",
-        "Forest": "F",
-        "Desert": "D",
-        "Ocean": "O",
-        "Tundra": "T",
-        "Swamp": "S"
-    }
+# def print_grid(grid):
+#     """Print grid for visualization"""
+#     environment_symbols = {
+#         "Grassland": "G",
+#         "Forest": "F",
+#         "Desert": "D",
+#         "Ocean": "O",
+#         "Tundra": "T",
+#         "Swamp": "S"
+#     }
 
-    organism_symbols = {
-        "Carnivores": "C",
-        "Herbivores": "H"
-    }
+#     organism_symbols = {
+#         "Carnivores": "C",
+#         "Herbivores": "H"
+#     }
 
-    for row in grid:
-        row_display = []
-        for cell in row:
-            # Check if any organisms present
-            # CURENT VERSION: ONLY DISPLAY FIRST ORG IN LIST
-            if cell.inhabitants:
-                first_organism = cell.inhabitants[0]
-                row_display.append(
-                    organism_symbols.get(type(first_organism).__name__, "?"))
-            else:
-                row_display.append(environment_symbols[cell.terrain])
-        print(" ".join(environment_symbols[cell.terrain] for cell in row))
-    print("\n")
-
-
-# test grid sizes
-grid_x = 10
-grid_y = 10
-
-# create test grid
-environment_classes = [Grassland, Forest, Desert, Ocean, Tundra, Swamp]
-test_grid = []
-for x in range(grid_x):
-    test_col = []
-    for y in range(grid_y):
-        environment = random.choice(environment_classes)
-        environment_instance = environment()
-        test_col.append(environment_instance)
-    test_grid.append(test_col)
+#     for row in grid:
+#         row_display = []
+#         for cell in row:
+#             # Check if any organisms present
+#             # CURENT VERSION: ONLY DISPLAY FIRST ORG IN LIST
+#             if cell.inhabitants:
+#                 first_organism = cell.inhabitants[0]
+#                 row_display.append(
+#                     organism_symbols.get(type(first_organism).__name__, "?"))
+#             else:
+#                 row_display.append(environment_symbols[cell.terrain])
+#         print(" ".join(environment_symbols[cell.terrain] for cell in row))
+#     print("\n")
 
 
-# Initialize test organisms
-# Random x, y coordinate to test algorithm and logic
-carn_1_x = random.choice([1, 2, 3, 4, 6, 7, 8, 9, 10])
-carn_1_y = random.randint(1, 10)
-herb_1_x = 5
-herb_1_y = 6
+# # test grid sizes
+# grid_x = 10
+# grid_y = 10
 
-# Test that should return values for search and flee
-# carn_1_x = 4
-# carn_1_y = 6
+# # create test grid
+# environment_classes = [Grassland, Forest, Desert, Ocean, Tundra, Swamp]
+# test_grid = []
+# for x in range(grid_x):
+#     test_col = []
+#     for y in range(grid_y):
+#         environment = random.choice(environment_classes)
+#         environment_instance = environment()
+#         test_col.append(environment_instance)
+#     test_grid.append(test_col)
+
+
+# # Initialize test organisms
+# # Random x, y coordinate to test algorithm and logic
+# carn_1_x = random.choice([1, 2, 3, 4, 6, 7, 8, 9, 10])
+# carn_1_y = random.randint(1, 10)
 # herb_1_x = 5
 # herb_1_y = 6
 
-print(f"carn_1 x, y: {carn_1_x}, {carn_1_y}")
-print(f"herb_1 x, y: {herb_1_x}, {herb_1_y}")
+# # Test that should return values for search and flee
+# # carn_1_x = 4
+# # carn_1_y = 6
+# # herb_1_x = 5
+# # herb_1_y = 6
 
-# Test organisms
-carn_1 = Carnivores(carn_1_x, carn_1_y, grid_x,
-                    grid_y, org_height=1, org_width=1)
+# print(f"carn_1 x, y: {carn_1_x}, {carn_1_y}")
+# print(f"herb_1 x, y: {herb_1_x}, {herb_1_y}")
 
-herb_1 = Herbivores(herb_1_x, herb_1_y, grid_x, grid_y,
-                    org_height=1, org_width=1)
+# # Test organisms
+# carn_1 = Carnivores(carn_1_x, carn_1_y, grid_x,
+#                     grid_y, org_height=1, org_width=1)
 
-# Place organisms on the grid
-test_grid[carn_1.x_pos][carn_1.y_pos].inhabitants.append(carn_1)
-test_grid[herb_1.x_pos][herb_1.y_pos].inhabitants.append(herb_1)
+# herb_1 = Herbivores(herb_1_x, herb_1_y, grid_x, grid_y,
+#                     org_height=1, org_width=1)
 
-# Print the initial grid state
-print("Initial Grid State:")
-print_grid(test_grid)
+# # Place organisms on the grid
+# test_grid[carn_1.x_pos][carn_1.y_pos].inhabitants.append(carn_1)
+# test_grid[herb_1.x_pos][herb_1.y_pos].inhabitants.append(herb_1)
 
-# print function results
-print(search_food(carn_1, test_grid))
-print(flee(herb_1, test_grid))
+# # Print the initial grid state
+# print("Initial Grid State:")
+# print_grid(test_grid)
+
+# # print function results
+# print(search_food(carn_1, test_grid))
+# print(flee(herb_1, test_grid))

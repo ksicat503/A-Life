@@ -4,8 +4,9 @@ from constants import WINDOW_HEIGHT, WINDOW_WIDTH, X_PX_SIZE, Y_PX_SIZE
 
 
 class Organisms:
-    def __init__(self, x_pos, y_pos, animal_type, speed):
+    def __init__(self, name, x_pos, y_pos, animal_type, speed):
         # all values below should be adjusted post test simulations
+        self.name = name
         self.x_pos = x_pos
         self.y_pos = y_pos
         self.org_height = Y_PX_SIZE
