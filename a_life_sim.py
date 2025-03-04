@@ -6,6 +6,7 @@ from data_manager import save_game, get_game_data
 from menu_handling import Menu_Handler
 from grid_creation import insert_grid_envs
 from collision_handling import handle_collisions
+from test_grid_ks import determine_movement
 
 
 # initializing imported module
@@ -93,8 +94,8 @@ while pygame_active:
                 original_pos = (moving_organism.x_pos, moving_organism.y_pos)
 
                 # move the organism
-                moving_organism.move()
-                # determine_movement(moving_organism, grid)
+                # moving_organism.move()
+                determine_movement(moving_organism, grid)
 
                 # check for collision, if collided, break and check the next
                 # organism that will be moving
