@@ -78,7 +78,7 @@ class Environment:
         self.total_resources = data['total_resources']
         self.disaster_present = data['disaster_present']
         self.weather = data['weather']
-        
+
         return self
 
     def set_temperature(self, temp):
