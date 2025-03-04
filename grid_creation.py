@@ -1,14 +1,10 @@
 import random
 import pygame
 from environments import Grassland, Tundra, Desert, Swamp, Forest
-from constants import WINDOW_HEIGHT, WINDOW_WIDTH, GRID_S, X_PX_SIZE, Y_PX_SIZE
+from constants import GRID_S, X_PX_SIZE, Y_PX_SIZE, GRID_ROWS, GRID_COLS
 
 # List of terrain types
 terrain_classes = [Grassland, Forest, Desert, Tundra, Swamp]
-
-# # Setting how many rows and columns using constans
-rows = WINDOW_HEIGHT // GRID_S
-cols = WINDOW_WIDTH // GRID_S
 
 
 def create_grid():
@@ -17,10 +13,10 @@ def create_grid():
     As this moves left to right, a neighbor is either directly left or above"""
     grid = []
     # Loop through each row, top to bottom
-    for y in range(rows):
+    for y in range(GRID_ROWS):
         row = []
         # Loop through each position in the row, left to right
-        for x in range(cols):
+        for x in range(GRID_COLS):
             neighbors = []
             # Checking for an above neighbor
             if y > 0:
@@ -43,8 +39,8 @@ def create_grid():
 def insert_grid_envs(window, grid):
     """Function to insert the previously created grid
     within the viewing window"""
-    for y in range(rows):
-        for x in range(cols):
+    for y in range(GRID_ROWS):
+        for x in range(GRID_COLS):
             terrain = grid[y][x]
             pygame.draw.rect(window,
                              terrain.color,

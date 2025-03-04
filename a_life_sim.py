@@ -81,55 +81,58 @@ while pygame_active:
                 save_game(menus.game_id, all_organisms, grid)
                 menus.save_game = False
         else:
-            # Move all the organisms while managing organism collisions
-            for moving_organism in all_organisms:
-                # if this organism is set to dead from previous move step,
-                # continue to next organism in loop
-                if not moving_organism.is_alive:
-                    continue
-
-                # save original organism, in case of collision with a same
-                # animal_type organism
-                original_pos = (moving_organism.x_pos, moving_organism.y_pos)
-
-                # move the organism
-                moving_organism.move()
-
-                # check for collision, if collided, break and check the next
-                # organism that will be moving
-                did_collide = handle_collisions(
-                    moving_organism, all_organisms, original_pos)
-
-                if did_collide:
-                    break
-
-            # Chance of all organisms to reproduce
-            for reproducing_organism in all_organisms:
-
-                # if successful at reproducing, create a deep copy of it
-                if reproducing_organism.reproduce():
-                    new_organism = copy.deepcopy(reproducing_organism)
-
-                    # reset some parameters to default for new organism
-                    new_organism.age = 0
-                    new_organism.days_since_fed = 0
-                    new_organism.energy_level = 10
-
-                    # move the organism so it does not overlap with the parent
-                    new_organism.move()
+            if menus.speed != 0:
+                # Move all the organisms while managing organism collisions
+                for moving_organism in all_organisms:
+                    # if this organism is set to dead from previous move step,
+                    # continue to next organism in loop
+                    if not moving_organism.is_alive:
+                        continue
 
                     # save original organism, in case of collision with a same
-                    # animal_type organism, check for collision
-                    original_pos = (new_organism.x_pos, new_organism.y_pos)
-                    did_collide = handle_collisions(
-                        new_organism, all_organisms, original_pos)
+                    # animal_type organism
+                    original_pos = (moving_organism.x_pos,
+                                    moving_organism.y_pos)
 
-                    # if not collided, add new spawn to list of all organisms,
-                    # else delete the object
-                    if not did_collide:
-                        all_organisms.append(new_organism)
-                    else:
-                        del new_organism
+                    # move the organism
+                    moving_organism.move()
+
+                    # check for collision, if collided, break and check the
+                    # next organism that will be moving
+                    did_collide = handle_collisions(
+                        moving_organism, all_organisms, original_pos)
+
+                    if did_collide:
+                        break
+
+                # Chance of all organisms to reproduce
+                for reproducing_organism in all_organisms:
+
+                    # if successful at reproducing, create a deep copy of it
+                    if reproducing_organism.reproduce():
+                        new_organism = copy.deepcopy(reproducing_organism)
+
+                        # reset some parameters to default for new organism
+                        new_organism.age = 0
+                        new_organism.days_since_fed = 0
+                        new_organism.energy_level = 10
+
+                        # move the organism so it does not overlap
+                        # with the parent
+                        new_organism.move()
+
+                        # save original organism, in case of collision with
+                        # a same animal_type organism, check for collision
+                        original_pos = (new_organism.x_pos, new_organism.y_pos)
+                        did_collide = handle_collisions(
+                            new_organism, all_organisms, original_pos)
+
+                        # if not collided, add new spawn to list of all
+                        # organisms, else delete the object
+                        if not did_collide:
+                            all_organisms.append(new_organism)
+                        else:
+                            del new_organism
 
             # Clear screen. Important or else is just paints the screen
             # as the organism moves.
@@ -147,7 +150,7 @@ while pygame_active:
 
         # Setting frame rate, lower setting seems to be easier to follow
         # Also if higher, the sim runs quickly due to energy consumption
-        clock.tick(5*menus.speed)
+        clock.tick(5*menus.speed if menus.speed != 0 else 60)
 
         # Printing out time out to 2 decimal placese
         elapsed_time = end_time - start_time

@@ -24,6 +24,16 @@ class Organisms:
     def __del__(self):
         return
 
+    def set_attributes_from_saved_file(self, data):
+        """ Updates organism attributes based on saved data"""
+        self.age = data['age']
+        self.days_since_fed = data['days_since_fed']
+        self.energy_level = data['energy_level']
+        self.is_alive = data['is_alive']
+        self.death_type = data['death_type']
+
+        return self
+
     # Using rectangle, but can update for a different shape or icon
     def insert_organism(self, window):
         """Function to insert organism with defined size, and grid position"""
