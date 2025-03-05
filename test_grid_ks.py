@@ -1,5 +1,5 @@
 import random
-from environments import Grassland, Forest, Desert, Ocean, Tundra, Swamp
+# from environments import Grassland, Forest, Desert, Ocean, Tundra, Swamp
 from carnivores import Carnivores
 from herbivores import Herbivores
 
@@ -19,11 +19,12 @@ def determine_movement(organism, grid):
     new_y = organism.y_pos
     if isinstance(organism, Carnivores):
         prey_positions = search_food(organism, grid)
-
+        # print(prey_positions)
         if prey_positions:
             # 60% chance for predator to move towards prey
             if random.random() < 0.6:
                 prey_x, prey_y = random.choice(prey_positions)
+                print("hunting")
 
                 # Calculate distance to prey
 
@@ -123,12 +124,17 @@ def search_food(carnivore, grid):
     # Scan tiles
     for dx in range(-sense_radius, sense_radius + 1):
         for dy in range(-sense_radius, sense_radius + 1):
-            new_x, new_y = carnivore.x_pos + dx, carnivore.y_pos + dy
+            new_x = (carnivore.x_pos + dx) // 20
+            new_y = (carnivore.y_pos + dy) // 20
 
             # Stay within grid
-            if 0 <= new_x < len(grid) and 0 <= new_y < len(grid[0]):
-                tile = grid[new_x][new_y]
+            # if 0 <= new_x < len(grid) and 0 <= new_y < len(grid[0]):
+            #     tile = grid[new_x][new_y]
 
+            if 0 <= new_x and new_x < len(grid):
+                if 0 <= new_y and new_y < len(grid[0]):
+                    tile = grid[new_x][new_y]
+                    print(tile.__dict__)
                 # Checks if herbivore is on the square
                 # in the future tiles will have multiple orgnaisms?
                 for organism in tile.inhabitants:

@@ -6,7 +6,7 @@ from data_manager import save_game, get_game_data
 from menu_handling import Menu_Handler
 from grid_creation import insert_grid_envs
 from collision_handling import handle_collisions
-from test_grid_ks import determine_movement
+# from test_grid_ks import determine_movement
 
 
 # initializing imported module
