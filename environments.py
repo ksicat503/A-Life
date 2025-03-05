@@ -41,16 +41,6 @@ class Environment:
                                 if starting_resources is not None
                                 else random.uniform(0.3, 1.0)
                                 )
-        self.terrain = name
-        self.temperature = base_temp
-        self.weather_options = weather_options
-        self.weather_freq = weather_freq
-        self.possible_disasters = possible_disasters
-        self.color = color
-        self.total_resources = (starting_resources
-                                if starting_resources is not None
-                                else random.uniform(0.3, 1.0)
-                                )
         self.disaster_present = None
         self.weather = "clear"
         # Stores organisms in the environment. Allows for 1+ organisms
@@ -81,6 +71,15 @@ class Environment:
             self.weather_options,
             weights=self.weather_freq,
             k=1)[0]
+
+    def set_attributes_from_saved_file(self, data):
+        """ Updates environment to data from saved file"""
+        self.temperature = data['temperature']
+        self.total_resources = data['total_resources']
+        self.disaster_present = data['disaster_present']
+        self.weather = data['weather']
+
+        return self
 
     def set_temperature(self, temp):
         """Hard sets temperature"""

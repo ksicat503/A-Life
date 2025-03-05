@@ -12,10 +12,10 @@ class Menu_Handler:
     def __init__(self, window):
         """ Initalize class variables"""
         self.window = window
-        self.speed_vals = [1, 2, 4]
+        self.speed_vals = [1, 2, 4, 0]
         self.can_click = True
-        self.set_game_state_variables()
         self.ui_components = load_ui_components()
+        self.set_game_state_variables()
 
     def set_game_state_variables(self):
         """ Sets variables that control the game state"""
@@ -29,6 +29,7 @@ class Menu_Handler:
         self.organisms = None
         self.organism = None
         self.speed = self.speed_vals[0]
+        self.ui_components['toggles']['speed'].current_index = 0
         self.stats = {}
 
     def set_organism_data(self, organisms):
@@ -242,7 +243,6 @@ class Menu_Handler:
 
     def draw_single_org_stat_menu(self):
         """ Draws stat page for single organism """
-        print('test')
         # Draws background
         self.window.blit(self.ui_components['background'], (0, 0))
 

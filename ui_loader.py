@@ -100,7 +100,8 @@ def load_ui_components():
             (WINDOW_WIDTH // 3) * 2, 400,
             [pygame.image.load('./assets/1x_button.png').convert_alpha(),
              pygame.image.load('./assets/2x_button.png').convert_alpha(),
-             pygame.image.load('./assets/4x_button.png').convert_alpha()
+             pygame.image.load('./assets/4x_button.png').convert_alpha(),
+             pygame.image.load('./assets/0x_button.png').convert_alpha()
              ],
             0.7
         )
