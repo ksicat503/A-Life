@@ -126,6 +126,7 @@ def search_food(carnivore, grid):
         for dy in range(-sense_radius, sense_radius + 1):
             new_x = (carnivore.x_pos + dx) // 20
             new_y = (carnivore.y_pos + dy) // 20
+            # print(f"new_x: {new_x}, new_y: {new_y}, grid size: {len(grid)}x{len(grid[0])}")
 
             # Stay within grid
             # if 0 <= new_x < len(grid) and 0 <= new_y < len(grid[0]):
@@ -134,13 +135,14 @@ def search_food(carnivore, grid):
             if 0 <= new_x and new_x < len(grid):
                 if 0 <= new_y and new_y < len(grid[0]):
                     tile = grid[new_x][new_y]
-                    print(tile.__dict__)
+                    print(tile)
+                    print('hunting')
                 # Checks if herbivore is on the square
                 # in the future tiles will have multiple orgnaisms?
-                for organism in tile.inhabitants:
-                    if isinstance(organism, Herbivores):
-                        prey_positions.append((new_x, new_y))
-                        print("hunting")
+                # for organism in tile.inhabitants:
+                #     if isinstance(organism, Herbivores):
+                #         prey_positions.append((new_x, new_y))
+                #         print("hunting")
 
     return prey_positions
 
