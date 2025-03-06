@@ -109,13 +109,15 @@ while pygame_active:
                 y, x = organism.y_pos, organism.x_pos
                 grid_tile = grid[y//GRID_S][x//GRID_S]
                 if organism.animal_type == 1:
-                    grid_tile.__dict__["herb_food"] -= 1
-                    organism.energy_level += 1.2
-                    # print(organism.__dict__)
+                    if grid_tile.__dict__["herb_food"] > 0:
+                        grid_tile.__dict__["herb_food"] -= 1
+                        organism.energy_level += 1.2
+                        # print(organism.__dict__)
                 else:
-                    grid_tile.__dict__["carn_food"] -= 1
-                    organism.energy_level += 1.2
-                #     print(organism.__dict__)
+                    if grid_tile.__dict__["carn_food"] > 0:
+                        grid_tile.__dict__["carn_food"] -= 1
+                        organism.energy_level += 1.2
+                    #     print(organism.__dict__)
                 # print(grid_tile.__dict__)
 
             # Chance of all organisms to reproduce
