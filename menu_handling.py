@@ -12,7 +12,7 @@ class Menu_Handler:
     def __init__(self, window):
         """ Initalize class variables"""
         self.window = window
-        self.speed_vals = [1, 2, 4]
+        self.speed_vals = [1, 2, 4, 0]
         self.can_click = True
         self.set_game_state_variables()
         self.ui_components = load_ui_components()
@@ -28,6 +28,7 @@ class Menu_Handler:
         self.novel_feature = True
         self.organisms = None
         self.organism = None
+        self.reload_display = False
         self.starting_data = {'herb_count': 10,
                               'carn_count': 3,
                               'mutation_chance': 0.10}
@@ -192,12 +193,13 @@ class Menu_Handler:
 
         # Draws Text
         self.ui_components['text']['title'].draw(self.window, "Paused")
-        self.ui_components['text']['speed'].draw(self.window, "Speed")
+        self.ui_components['text']['speed'].draw(self.window, "Frame Skip")
 
         # Draws buttons and toggles
         if self.ui_components['buttons']['resume'].draw(
              self.window, self.can_click):
             self.current_menu = 'none'
+            self.reload_display = True
         if self.ui_components['toggles']['speed'].draw(
              self.window, self.can_click):
             self.speed = self.speed_vals[
@@ -312,3 +314,4 @@ class Menu_Handler:
              self.window, self.can_click):
             self.current_menu = 'none'
             self.organism = None
+            self.reload_display = True

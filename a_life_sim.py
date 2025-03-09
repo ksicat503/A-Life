@@ -53,6 +53,7 @@ while pygame_active:
         menus.set_organism_data(all_organisms)
         # Keeping track of time, as we may need this for age
         start_time = time.time()
+        loopCount = 0
 
     while menus.sim_active:
         # Set up event for when the user quits out of the screen
@@ -76,6 +77,7 @@ while pygame_active:
 
         if menus.current_menu != 'none':
             menus.display_menu()
+            pygame.display.update()
             # Check if game needs to be saved
             if menus.save_game:
                 save_game(menus.game_id, all_organisms, grid)
@@ -133,24 +135,26 @@ while pygame_active:
                             all_organisms.append(new_organism)
                         else:
                             del new_organism
+                loopCount += 1
+            if (menus.speed != 0 and
+               loopCount % menus.speed == 0) or menus.reload_display is True:
+                # Clear screen. Important or else is just paints the screen
+                # as the organism moves.
+                window.fill(black)
+                # Code to insert grid, without moving it constantly
+                insert_grid_envs(window, grid)
+                # Inserting organism on screen in new position
+                for organism in all_organisms:
+                    organism.insert_organism(window)
+                pygame.display.flip()
+                menus.reload_display = False
 
-            # Clear screen. Important or else is just paints the screen
-            # as the organism moves.
-            window.fill(black)
-            # Code to insert grid, without moving it constantly
-            insert_grid_envs(window, grid)
-            pygame.display.flip()
-            # Inserting organism on screen in new position
-            for organism in all_organisms:
-                organism.insert_organism(window)
-
-        # update the display for the new movement
-        pygame.display.update()
+        # update the time
         end_time = time.time()
 
         # Setting frame rate, lower setting seems to be easier to follow
         # Also if higher, the sim runs quickly due to energy consumption
-        clock.tick(5*menus.speed if menus.speed != 0 else 60)
+        clock.tick(7)
 
         # Printing out time out to 2 decimal placese
         elapsed_time = end_time - start_time
