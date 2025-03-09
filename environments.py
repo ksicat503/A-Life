@@ -71,6 +71,15 @@ class Environment:
             weights=self.weather_freq,
             k=1)[0]
 
+    def set_attributes_from_saved_file(self, data):
+        """ Updates environment to data from saved file"""
+        self.temperature = data['temperature']
+        self.total_resources = data['total_resources']
+        self.disaster_present = data['disaster_present']
+        self.weather = data['weather']
+
+        return self
+
     def set_temperature(self, temp):
         """Hard sets temperature"""
         self.temperature = temp

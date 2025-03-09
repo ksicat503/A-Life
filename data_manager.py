@@ -2,18 +2,30 @@ import os
 import random
 
 from carnivores import Carnivores
-from herbivores import Herbivores
+from constants import GRID_COLS, GRID_ROWS, GRID_S
+from environments import Grassland, Tundra, Desert, Swamp, Forest
 from grid_creation import create_grid
+from herbivores import Herbivores
 from json_writer import org_json_writer, json_reader, sim_json_writer
 from test_organism import Organism
-from constants import WINDOW_HEIGHT, WINDOW_WIDTH, GRID_S
+
+env_mapping = {
+    "Grassland": Grassland,
+    "Tundra": Tundra,
+    "Desert": Desert,
+    "Swamp": Swamp,
+    "Forest": Forest
+    }
+org_mapping = [
+    Organism, Herbivores, Carnivores
+]
 
 
 def save_game(game_id, organisms, grid):
     """ Saves game data"""
     create_folders(game_id)
     org_json_writer(organisms, f'./saves/id_{game_id}/organism.json')
-    sim_json_writer(grid, f'./saves/id_{game_id}/sims.json')
+    sim_json_writer(grid, f'./saves/id_{game_id}/grid.json')
 
 
 def create_folders(game_id):
@@ -32,30 +44,28 @@ def get_game_data(game_id=None):
         return [get_random_starting_organisms(), create_grid()]
     else:
         # Need to implement loading in saved grid data
-        return [load_organisms(game_id), create_grid()]
+        return [load_organisms(game_id), load_grid(game_id)]
 
 
 def get_random_starting_organisms():
     """Randomly place a number of herbivores between 8-15
     and add 1/3 that number of carnivores."""
     num_herbivores = random.randint(8, 16)
-    num_carnivores = max(1, num_herbivores // 3)
-    rows = WINDOW_WIDTH // GRID_S
-    cols = WINDOW_HEIGHT // GRID_S
+    num_carnivores = max(1, num_herbivores // 2)
 
     all_organisms = []
 
     for _ in range(num_herbivores):
-        row = random.randint(0, rows) * GRID_S
-        col = random.randint(0, cols) * GRID_S
+        row = random.randint(0, GRID_ROWS) * GRID_S
+        col = random.randint(0, GRID_COLS) * GRID_S
         all_organisms.append(Herbivores(_,
                                         row,
                                         col
                                         ))
 
     for _ in range(num_carnivores):
-        row = random.randint(0, rows) * GRID_S
-        col = random.randint(0, cols) * GRID_S
+        row = random.randint(0, GRID_ROWS) * GRID_S
+        col = random.randint(0, GRID_COLS) * GRID_S
         all_organisms.append(Carnivores(_,
                                         row,
                                         col
@@ -66,17 +76,45 @@ def get_random_starting_organisms():
 
 def load_organisms(game_id):
     """ Load organism from json file"""
-
-    all_organisms = []
     organism_data = json_reader(
                 f"./saves/id_{game_id}/organism.json")
-    for organism in organism_data:
-        # will need to update.
-        if organism['animal_type'] == 0:
-            animal = Organism(organism['x_pos'], organism['y_pos'])
-        elif organism['animal_type'] == 1:
-            animal = Herbivores(organism['x_pos'], organism['y_pos'])
-        else:
-            animal = Carnivores(organism['x_pos'], organism['y_pos'])
-        all_organisms.append(animal)
+    # Makes new organisms and loads saved data
+    all_organisms = [
+        org_mapping[organism['animal_type']](
+            organism['x_pos'],
+            organism['y_pos']
+        ).set_attributes_from_saved_file({
+            'age': organism['age'],
+            'days_since_fed': organism['days_since_fed'],
+            'energy_level': organism['energy_level'],
+            'is_alive': organism['is_alive'],
+            'death_type': organism['death_type']
+        })
+        for organism in organism_data
+    ]
+    print(all_organisms)
+
     return all_organisms
+
+
+def load_grid(game_id):
+    """ Builds grid based on saved grid data"""
+    grid_data = json_reader(
+                f"./saves/id_{game_id}/grid.json")
+
+    # Makes new env instances and loads saved data
+    env_instances = [
+        env_mapping[element['terrain']]().set_attributes_from_saved_file({
+            'temperature': element['temperature'],
+            'total_resources': element['total_resources'],
+            'disaster_present': element['disaster_present'],
+            'weather': element['weather']
+        })
+        for element in grid_data
+    ]
+
+    # Converts 1d array to 2d array
+    grid = [env_instances[index:index+GRID_COLS] for index in range(
+        0, GRID_COLS*GRID_ROWS, GRID_COLS)
+        ]
+    return grid
