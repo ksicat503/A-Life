@@ -44,9 +44,9 @@ while pygame_active:
     pygame.display.update()
     if menus.sim_active:
         if menus.load_game is False:
-            data = get_game_data()
+            data = get_game_data(data=menus.starting_data)
         else:
-            data = get_game_data(menus.game_id)
+            data = get_game_data(game_id=menus.game_id)
 
         all_organisms = data[0]
         grid = data[1]

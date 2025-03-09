@@ -3,8 +3,8 @@ from organisms import Organisms
 
 
 class Carnivores(Organisms):
-    def __init__(self, x_pos, y_pos):
-        super().__init__(x_pos, y_pos, 2, 2)
+    def __init__(self, x_pos, y_pos, mutation_chance):
+        super().__init__(x_pos, y_pos, 2, 2, mutation_chance)
         self.maturation_age = 10
         self.offspring_chance = 0.05
         self.animal_type = 2

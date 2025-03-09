@@ -12,10 +12,10 @@ class Menu_Handler:
     def __init__(self, window):
         """ Initalize class variables"""
         self.window = window
-        self.speed_vals = [1, 2, 4, 0]
+        self.speed_vals = [1, 2, 4]
         self.can_click = True
-        self.ui_components = load_ui_components()
         self.set_game_state_variables()
+        self.ui_components = load_ui_components()
 
     def set_game_state_variables(self):
         """ Sets variables that control the game state"""
@@ -28,8 +28,10 @@ class Menu_Handler:
         self.novel_feature = True
         self.organisms = None
         self.organism = None
+        self.starting_data = {'herb_count': 10,
+                              'carn_count': 3,
+                              'mutation_chance': 0.10}
         self.speed = self.speed_vals[0]
-        self.ui_components['toggles']['speed'].current_index = 0
         self.stats = {}
 
     def set_organism_data(self, organisms):
@@ -89,21 +91,57 @@ class Menu_Handler:
 
         # Draws Text
         self.ui_components['text']['title'].draw(self.window, "New Simulation")
-        self.ui_components['text']['features'].draw(self.window,
-                                                    "Novel Features")
+        """        self.ui_components['text']['body_1_1'].draw(self.window,
+                                                    "Novel Features")"""
+
+        self.ui_components['text']['body_1_1'].draw(
+            self.window,
+            f"Herbivore Count: {self.starting_data['herb_count']}")
+        self.ui_components['text']['body_1_4'].draw(
+            self.window,
+            f"Carnivore Count: {self.starting_data['carn_count']}")
+        
+        self.ui_components['text']['body_1_7'].draw(
+            self.window,
+            f"Mutation Rate: {self.starting_data['mutation_chance']}")
 
         # Draws buttons and toggles
-        if self.ui_components['toggles']['on_off'].draw(
+        if self.ui_components['buttons']['herb_add'].draw(
              self.window, self.can_click):
-            self.novel_feature = not self.novel_feature
+            self.starting_data['herb_count'] += 1
             self.can_click = False
+        if self.ui_components['buttons']['herb_sub'].draw(
+             self.window, self.can_click):
+            if self.starting_data['herb_count'] > 0:
+                self.starting_data['herb_count'] -= 1
+                self.can_click = False
+        if self.ui_components['buttons']['carn_add'].draw(
+             self.window, self.can_click):
+            self.starting_data['carn_count'] += 1
+            self.can_click = False
+        if self.ui_components['buttons']['carn_sub'].draw(
+             self.window, self.can_click):
+            if self.starting_data['carn_count'] > 0:
+                self.starting_data['carn_count'] -= 1
+                self.can_click = False
+        if self.ui_components['buttons']['mutation_add'].draw(
+             self.window, self.can_click):
+            self.starting_data['mutation_chance'] = round(
+                    self.starting_data['mutation_chance'] + 0.01, 2)
+            self.can_click = False
+        if self.ui_components['buttons']['mutation_sub'].draw(
+             self.window, self.can_click):
+            if self.starting_data['mutation_chance'] > 0.05:
+                self.starting_data['mutation_chance'] = round(
+                    self.starting_data['mutation_chance'] - 0.01, 2)
+                self.can_click = False
         if self.ui_components['buttons']['start'].draw(
              self.window, self.can_click):
             self.game_id = 0 if not os.path.isdir('./saves') \
                 else len(os.listdir('./saves'))
             self.sim_active = True
             self.current_menu = 'none'
-        if self.ui_components['buttons']['back'].draw(
+        if self.ui_components['buttons']['back_new_sim'].draw(
              self.window, self.can_click):
             self.current_menu = 'main'
             self.can_click = False
@@ -141,7 +179,7 @@ class Menu_Handler:
                 self.sim_active = True
                 self.load_game = True
                 self.current_menu = 'none'
-        if self.ui_components['buttons']['back'].draw(
+        if self.ui_components['buttons']['back_load_sim'].draw(
              self.window, self.can_click):
             self.current_menu = 'main'
             self.can_click = False
