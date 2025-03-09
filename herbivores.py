@@ -24,8 +24,8 @@ class Herbivores(Organisms):
 
         if (self.age > self.maturation_age and
            self.offspring_chance > random.random() and
-           self.energy_level > 50):
-            self.energy_level -= 40
+           self.energy_level > 35):
+            self.energy_level -= 20
             return True
         else:
             return False

@@ -25,8 +25,8 @@ class Carnivores(Organisms):
 
         if (self.age > self.maturation_age and
                 self.offspring_chance > random.random() and
-                self.energy_level > 80):
-            self.energy_level -= 60
+                self.energy_level > 40):
+            self.energy_level -= 25
             return True
         else:
             return False

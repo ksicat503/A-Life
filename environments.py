@@ -74,7 +74,8 @@ class Environment:
     def set_attributes_from_saved_file(self, data):
         """ Updates environment to data from saved file"""
         self.temperature = data['temperature']
-        self.total_resources = data['total_resources']
+        self.herb_food = data['herb_food']
+        self.carn_food = data['carn_food']
         self.disaster_present = data['disaster_present']
         self.weather = data['weather']
 
@@ -88,6 +89,10 @@ class Environment:
         """Uses resources. Makes sure the total amount doesn't go below zero"""
         self.total_resources -= amt
         self.total_resources = max(0, self.total_resources - amt)
+
+    def restore_herb_food(self):
+        if self.herb_food < 50:
+            self.herb_food += 0.1
 
     def spawn_disaster(self):
         """
@@ -124,7 +129,7 @@ class Grassland(Environment):
             ["Drought", "Flood", "Wildfire", "Earthquake"],
             (124, 192, 64),
             50,
-            50
+            30
         )
 
 
@@ -139,7 +144,7 @@ class Forest(Environment):
             ["Wildfire", "Drought", "Flood", "Earthquake"],
             (34, 85, 34),
             50,
-            50
+            30
         )
 
     def regenerate_resources(self):
@@ -162,7 +167,7 @@ class Desert(Environment):
             ["Sandstorm", "Earthquake", "Drought"],
             (237, 201, 175),
             50,
-            50
+            30
         )
 
 
@@ -178,7 +183,7 @@ class Ocean(Environment):
             None,
             (28, 107, 160),
             50,
-            50
+            30
         )
 
 
@@ -193,7 +198,7 @@ class Tundra(Environment):
             ["Blizzard"],
             (180, 190, 190),
             50,
-            50
+            30
         )
 
 
@@ -208,5 +213,5 @@ class Swamp(Environment):
             ["Flood", "Hurricane", "Drought"],
             (63, 92, 51),
             50,
-            50
+            30
         )

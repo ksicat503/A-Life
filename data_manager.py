@@ -79,6 +79,7 @@ def load_organisms(game_id):
     # Makes new organisms and loads saved data
     all_organisms = [
         org_mapping[organism['animal_type']](
+            organism['name'],
             organism['x_pos'],
             organism['y_pos'],
             organism['mutation_chance']
@@ -87,7 +88,11 @@ def load_organisms(game_id):
             'days_since_fed': organism['days_since_fed'],
             'energy_level': organism['energy_level'],
             'is_alive': organism['is_alive'],
-            'death_type': organism['death_type']
+            'death_type': organism['death_type'],
+            'child_count': organism['child_count'],
+            'life_expectancy': organism['life_expectancy'],
+            'speed': organism['speed'],
+            'offspring_chance': organism['offspring_chance']
         })
         for organism in organism_data
     ]
@@ -104,7 +109,8 @@ def load_grid(game_id):
     env_instances = [
         env_mapping[element['terrain']]().set_attributes_from_saved_file({
             'temperature': element['temperature'],
-            'total_resources': element['total_resources'],
+            'herb_food': element['herb_food'],
+            'carn_food': element['herb_food'],
             'disaster_present': element['disaster_present'],
             'weather': element['weather']
         })

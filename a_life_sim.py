@@ -89,7 +89,6 @@ while pygame_active:
                 for moving_organism in all_organisms:
                     # if this organism is set to dead from previous move step,
                     # continue to next organism in loop
-                    moving_organism.age += 0.02
                     if not moving_organism.is_alive:
                         continue
 
@@ -136,6 +135,7 @@ while pygame_active:
                         new_organism.age = 0
                         new_organism.days_since_fed = 0
                         new_organism.energy_level = 10
+                        new_organism.child_count = 0
 
                         # move the organism so it does not overlap
                         # with the parent
@@ -150,10 +150,28 @@ while pygame_active:
                         # if not collided, add new spawn to list of all
                         # organisms, else delete the object
                         if not did_collide:
+                            print('reproduce')
                             all_organisms.append(new_organism)
+                            reproducing_organism.child_count += 1
                         else:
                             del new_organism
+
+                for row in grid:
+                    for element in row:
+                        element.restore_herb_food()
+
+                for organism in all_organisms:
+                    if organism.energy_level < 0:
+                        organism.is_alive = False
+                        organism.death_type = 2
+                    elif organism.age > organism.life_expectancy:
+                        organism.is_alive = False
+                        organism.death_type = 3
+
+                    organism.mutation()
+                    organism.age += 0.1
                 loopCount += 1
+
             if (menus.speed != 0 and
                loopCount % menus.speed == 0) or menus.reload_display is True:
                 # Clear screen. Important or else is just paints the screen
@@ -171,7 +189,7 @@ while pygame_active:
 
         # Setting frame rate, lower setting seems to be easier to follow
         # Also if higher, the sim runs quickly due to energy consumption
-        clock.tick(5)
+        clock.tick(5*menus.speed if menus.speed != 0 else 5)
 
         # Printing out time out to 2 decimal placese
         elapsed_time = end_time - start_time

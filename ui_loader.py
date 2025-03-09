@@ -27,10 +27,17 @@ def load_ui_components():
     components['text']['body_1_5'] = Text(WINDOW_WIDTH//6, 400, 25, False)
     components['text']['body_1_6'] = Text(WINDOW_WIDTH//6, 425, 25, False)
     components['text']['body_1_7'] = Text(WINDOW_WIDTH//6, 450, 25, False)
+    components['text']['body_1_8'] = Text(WINDOW_WIDTH//6, 475, 25, False)
     components['text']['subtitle_2'] = Text(WINDOW_WIDTH//2, 375, 40)
     components['text']['subtitle_2_1'] = Text(WINDOW_WIDTH//6, 425, 30, False)
     components['text']['body_2_1_1'] = Text(WINDOW_WIDTH//6, 475, 25, False)
     components['text']['body_2_1_2'] = Text(WINDOW_WIDTH//6, 500, 25, False)
+    components['text']['subtitle_2_1.5'] = Text((WINDOW_WIDTH//6)*4,
+                                                425, 30, False)
+    components['text']['body_2_1_1.5'] = Text((WINDOW_WIDTH//6)*4,
+                                              475, 25, False)
+    components['text']['body_2_1_2.5'] = Text((WINDOW_WIDTH//6)*4,
+                                              500, 25, False)
     components['text']['subtitle_2_2'] = Text(WINDOW_WIDTH//6, 550, 30, False)
     components['text']['body_2_2_1'] = Text(WINDOW_WIDTH//6, 600, 25, False)
     components['text']['body_2_2_2'] = Text(WINDOW_WIDTH//6, 625, 25, False)
