@@ -3,8 +3,9 @@ from organisms import Organisms
 
 
 class Herbivores(Organisms):
-    def __init__(self, x_pos, y_pos, mutation_chance):
-        super().__init__(x_pos, y_pos, 1, 1, mutation_chance)
+    def __init__(self, name, x_pos, y_pos, mutation_chance):
+        super().__init__(name, x_pos, y_pos, 1, 1, mutation_chance)
+        self.name = f"herb{name}"
         self.maturation_age = 10
         self.offspring_chance = 0.05
         self.animal_type = 1
@@ -24,6 +25,7 @@ class Herbivores(Organisms):
         if (self.age > self.maturation_age and
            self.offspring_chance > random.random() and
            self.energy_level > 50):
+            self.energy_level -= 40
             return True
         else:
             return False

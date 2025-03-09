@@ -1,11 +1,12 @@
 import copy
 import time
 import pygame
-from constants import WINDOW_HEIGHT, WINDOW_WIDTH
+from constants import WINDOW_HEIGHT, WINDOW_WIDTH, GRID_S
 from data_manager import save_game, get_game_data
 from menu_handling import Menu_Handler
 from grid_creation import insert_grid_envs
 from collision_handling import handle_collisions
+# from test_grid_ks import determine_movement
 
 
 # initializing imported module
@@ -88,6 +89,7 @@ while pygame_active:
                 for moving_organism in all_organisms:
                     # if this organism is set to dead from previous move step,
                     # continue to next organism in loop
+                    moving_organism.age += 0.02
                     if not moving_organism.is_alive:
                         continue
 
@@ -98,6 +100,7 @@ while pygame_active:
 
                     # move the organism
                     moving_organism.move()
+                    # determine_movement(moving_organism, grid)
 
                     # check for collision, if collided, break and check the
                     # next organism that will be moving
@@ -106,6 +109,21 @@ while pygame_active:
 
                     if did_collide:
                         break
+
+                for organism in all_organisms:
+                    y, x = organism.y_pos, organism.x_pos
+                    grid_tile = grid[y//GRID_S][x//GRID_S]
+                    if organism.animal_type == 1:
+                        if grid_tile.__dict__["herb_food"] > 0:
+                            grid_tile.__dict__["herb_food"] -= 1
+                            organism.energy_level += 1.2
+                            # print(organism.__dict__)
+                    else:
+                        if grid_tile.__dict__["carn_food"] > 0:
+                            grid_tile.__dict__["carn_food"] -= 1
+                            organism.energy_level += 1.2
+                        #     print(organism.__dict__)
+                    # print(grid_tile.__dict__)
 
                 # Chance of all organisms to reproduce
                 for reproducing_organism in all_organisms:
@@ -149,14 +167,13 @@ while pygame_active:
                 pygame.display.flip()
                 menus.reload_display = False
 
-        # update the time
         end_time = time.time()
 
         # Setting frame rate, lower setting seems to be easier to follow
         # Also if higher, the sim runs quickly due to energy consumption
-        clock.tick(7)
+        clock.tick(5)
 
         # Printing out time out to 2 decimal placese
         elapsed_time = end_time - start_time
         formatted_time = "{:.2f}".format(elapsed_time)
-        print(formatted_time)
+        # print(formatted_time)
