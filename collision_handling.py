@@ -41,6 +41,8 @@ def handle_collisions(moving_organism, all_organisms, original_pos):
                 moving_organism.death_type = 1
                 check_organism.days_since_fed = 0
                 check_organism.consumed_count += 1
+                check_organism.energy_level += 1
+                print("eaten")
                 return True
             if (
                 moving_organism.animal_type == 2 and
@@ -50,6 +52,8 @@ def handle_collisions(moving_organism, all_organisms, original_pos):
                 check_organism.death_type = 1
                 moving_organism.days_since_fed = 0
                 moving_organism.consumed_count += 1
+                moving_organism.energy_level += 1
+                print("eaten")
                 return True
             # when same animal_type collides, revert back the
             # moving_organism to its original position

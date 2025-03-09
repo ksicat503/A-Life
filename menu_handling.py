@@ -14,8 +14,8 @@ class Menu_Handler:
         self.window = window
         self.speed_vals = [1, 2, 4, 0]
         self.can_click = True
-        self.ui_components = load_ui_components()
         self.set_game_state_variables()
+        self.ui_components = load_ui_components()
 
     def set_game_state_variables(self):
         """ Sets variables that control the game state"""
@@ -28,8 +28,11 @@ class Menu_Handler:
         self.novel_feature = True
         self.organisms = None
         self.organism = None
+        self.reload_display = False
+        self.starting_data = {'herb_count': 10,
+                              'carn_count': 3,
+                              'mutation_chance': 0.10}
         self.speed = self.speed_vals[0]
-        self.ui_components['toggles']['speed'].current_index = 0
         self.stats = {}
 
     def set_organism_data(self, organisms):
@@ -89,21 +92,56 @@ class Menu_Handler:
 
         # Draws Text
         self.ui_components['text']['title'].draw(self.window, "New Simulation")
-        self.ui_components['text']['features'].draw(self.window,
-                                                    "Novel Features")
+        """        self.ui_components['text']['body_1_1'].draw(self.window,
+                                                    "Novel Features")"""
+
+        self.ui_components['text']['body_1_1'].draw(
+            self.window,
+            f"Herbivore Count: {self.starting_data['herb_count']}")
+        self.ui_components['text']['body_1_4'].draw(
+            self.window,
+            f"Carnivore Count: {self.starting_data['carn_count']}")
+        self.ui_components['text']['body_1_7'].draw(
+            self.window,
+            f"Mutation Rate: {self.starting_data['mutation_chance']}")
 
         # Draws buttons and toggles
-        if self.ui_components['toggles']['on_off'].draw(
+        if self.ui_components['buttons']['herb_add'].draw(
              self.window, self.can_click):
-            self.novel_feature = not self.novel_feature
+            self.starting_data['herb_count'] += 1
             self.can_click = False
+        if self.ui_components['buttons']['herb_sub'].draw(
+             self.window, self.can_click):
+            if self.starting_data['herb_count'] > 0:
+                self.starting_data['herb_count'] -= 1
+                self.can_click = False
+        if self.ui_components['buttons']['carn_add'].draw(
+             self.window, self.can_click):
+            self.starting_data['carn_count'] += 1
+            self.can_click = False
+        if self.ui_components['buttons']['carn_sub'].draw(
+             self.window, self.can_click):
+            if self.starting_data['carn_count'] > 0:
+                self.starting_data['carn_count'] -= 1
+                self.can_click = False
+        if self.ui_components['buttons']['mutation_add'].draw(
+             self.window, self.can_click):
+            self.starting_data['mutation_chance'] = round(
+                    self.starting_data['mutation_chance'] + 0.01, 2)
+            self.can_click = False
+        if self.ui_components['buttons']['mutation_sub'].draw(
+             self.window, self.can_click):
+            if self.starting_data['mutation_chance'] > 0.05:
+                self.starting_data['mutation_chance'] = round(
+                    self.starting_data['mutation_chance'] - 0.01, 2)
+                self.can_click = False
         if self.ui_components['buttons']['start'].draw(
              self.window, self.can_click):
             self.game_id = 0 if not os.path.isdir('./saves') \
                 else len(os.listdir('./saves'))
             self.sim_active = True
             self.current_menu = 'none'
-        if self.ui_components['buttons']['back'].draw(
+        if self.ui_components['buttons']['back_new_sim'].draw(
              self.window, self.can_click):
             self.current_menu = 'main'
             self.can_click = False
@@ -141,7 +179,7 @@ class Menu_Handler:
                 self.sim_active = True
                 self.load_game = True
                 self.current_menu = 'none'
-        if self.ui_components['buttons']['back'].draw(
+        if self.ui_components['buttons']['back_load_sim'].draw(
              self.window, self.can_click):
             self.current_menu = 'main'
             self.can_click = False
@@ -154,12 +192,13 @@ class Menu_Handler:
 
         # Draws Text
         self.ui_components['text']['title'].draw(self.window, "Paused")
-        self.ui_components['text']['speed'].draw(self.window, "Speed")
+        self.ui_components['text']['speed'].draw(self.window, "Frame Skip")
 
         # Draws buttons and toggles
         if self.ui_components['buttons']['resume'].draw(
              self.window, self.can_click):
             self.current_menu = 'none'
+            self.reload_display = True
         if self.ui_components['toggles']['speed'].draw(
              self.window, self.can_click):
             self.speed = self.speed_vals[
@@ -181,11 +220,14 @@ class Menu_Handler:
     def calculate_stats(self):
         """ Calculates stats for the current sim """
         stat_keys = ['h_alive_count', 'h_death_by_hunger',
-                     'h_death_by_consumed', 'c_alive_count',
-                     'c_death_by_hunger', 'c_death_by_consumed']
+                     'h_death_by_age', 'h_death_by_consumed',
+                     'c_alive_count', 'c_death_by_hunger',
+                     'c_death_by_age', 'c_death_by_consumed']
         self.stats = {key: 0 for key in stat_keys}
         animal_map = {1: 'h', 2: 'c'}
-        death_map = {1: 'death_by_consumed', 2: 'death_by_hunger'}
+        death_map = {1: 'death_by_consumed',
+                     2: 'death_by_hunger',
+                     3: 'death_by_age'}
 
         for organism in self.organisms:
             animal_type = animal_map[organism.animal_type]
@@ -217,6 +259,12 @@ class Menu_Handler:
             self.window, f"Herbivore : {self.stats['h_death_by_hunger']}")
         self.ui_components['text']['body_2_1_2'].draw(
             self.window, f"Carnivore : {self.stats['c_death_by_hunger']}")
+        self.ui_components['text']['subtitle_2_1.5'].draw(
+            self.window, "By Old Age")
+        self.ui_components['text']['body_2_1_1.5'].draw(
+            self.window, f"Herbivore : {self.stats['h_death_by_age']}")
+        self.ui_components['text']['body_2_1_2.5'].draw(
+            self.window, f"Carnivore : {self.stats['c_death_by_age']}")
         self.ui_components['text']['subtitle_2_2'].draw(
             self.window, "By Consumed")
         self.ui_components['text']['body_2_2_1'].draw(
@@ -252,25 +300,33 @@ class Menu_Handler:
         else:
             self.ui_components['text']['title'].draw(
                 self.window, "Carnivore instance")
-            self.ui_components['text']['body_1_7'].draw(
+            self.ui_components['text']['body_1_8'].draw(
                 self.window,
                 f"Amount of animals consumed: {self.organism.consumed_count}")
 
         self.ui_components['text']['body_1_1'].draw(
-            self.window, f"Energy Level: {self.organism.energy_level}")
+            self.window,
+            f"Energy Level: {round(self.organism.energy_level, 2)}")
         self.ui_components['text']['body_1_2'].draw(
             self.window, f"Days Since Fed: {self.organism.days_since_fed}")
         self.ui_components['text']['body_1_3'].draw(
-            self.window, f"Current Age: {self.organism.age}")
+            self.window,
+            f"Current Age: {round(self.organism.age, 2)}")
         self.ui_components['text']['body_1_4'].draw(
             self.window, f"Life Expectancy: {self.organism.life_expectancy}")
         self.ui_components['text']['body_1_5'].draw(
             self.window, f"Maturation Age: {self.organism.maturation_age}")
         self.ui_components['text']['body_1_6'].draw(
             self.window,
-            f"Offspring Chance: {self.organism.offspring_chance * 100}%")
+            "Offspring Chance: " + round(
+                self.organism.offspring_chance * 100, 2) + "%")
+        self.ui_components['text']['body_1_7'].draw(
+            self.window,
+            f"Child Count: {self.organism.child_count}"
+        )
 
         if self.ui_components['buttons']['resume_stat'].draw(
              self.window, self.can_click):
             self.current_menu = 'none'
             self.organism = None
+            self.reload_display = True

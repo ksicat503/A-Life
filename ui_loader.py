@@ -17,7 +17,6 @@ def load_ui_components():
 
     # Text sizing/positioning
     components['text']['title'] = Text(WINDOW_WIDTH//2, 150, 50)
-    components['text']['features'] = Text(WINDOW_WIDTH//3, 300, 30)
     components['text']['speed'] = Text(WINDOW_WIDTH//3, 400, 30)
 
     components['text']['subtitle_1'] = Text(WINDOW_WIDTH//2, 250, 40)
@@ -28,10 +27,17 @@ def load_ui_components():
     components['text']['body_1_5'] = Text(WINDOW_WIDTH//6, 400, 25, False)
     components['text']['body_1_6'] = Text(WINDOW_WIDTH//6, 425, 25, False)
     components['text']['body_1_7'] = Text(WINDOW_WIDTH//6, 450, 25, False)
+    components['text']['body_1_8'] = Text(WINDOW_WIDTH//6, 475, 25, False)
     components['text']['subtitle_2'] = Text(WINDOW_WIDTH//2, 375, 40)
     components['text']['subtitle_2_1'] = Text(WINDOW_WIDTH//6, 425, 30, False)
     components['text']['body_2_1_1'] = Text(WINDOW_WIDTH//6, 475, 25, False)
     components['text']['body_2_1_2'] = Text(WINDOW_WIDTH//6, 500, 25, False)
+    components['text']['subtitle_2_1.5'] = Text((WINDOW_WIDTH//6)*4,
+                                                425, 30, False)
+    components['text']['body_2_1_1.5'] = Text((WINDOW_WIDTH//6)*4,
+                                              475, 25, False)
+    components['text']['body_2_1_2.5'] = Text((WINDOW_WIDTH//6)*4,
+                                              500, 25, False)
     components['text']['subtitle_2_2'] = Text(WINDOW_WIDTH//6, 550, 30, False)
     components['text']['body_2_2_1'] = Text(WINDOW_WIDTH//6, 600, 25, False)
     components['text']['body_2_2_2'] = Text(WINDOW_WIDTH//6, 625, 25, False)
@@ -52,16 +58,45 @@ def load_ui_components():
             pygame.image.load('./assets/exit_button.png').convert_alpha(),
             0.7
         )
-    # New Sim Menu UI Components
-    components['toggles']['on_off'] = Toggle(
-            (WINDOW_WIDTH // 3) * 2, 300,
-            [pygame.image.load('./assets/on_button.png').convert_alpha(),
-             pygame.image.load('./assets/off_button.png').convert_alpha()],
+    components['buttons']['herb_add'] = Button(
+            (WINDOW_WIDTH // 5)*3, 300,
+            pygame.image.load('./assets/add_button.png').convert_alpha(),
             0.7
         )
+    components['buttons']['herb_sub'] = Button(
+            (WINDOW_WIDTH // 5)*4, 300,
+            pygame.image.load('./assets/subtract_button.png').convert_alpha(),
+            0.7
+        )
+    components['buttons']['carn_add'] = Button(
+            (WINDOW_WIDTH // 5)*3, 375,
+            pygame.image.load('./assets/add_button.png').convert_alpha(),
+            0.7
+        )
+    components['buttons']['carn_sub'] = Button(
+            (WINDOW_WIDTH // 5)*4, 375,
+            pygame.image.load('./assets/subtract_button.png').convert_alpha(),
+            0.7
+        )
+    components['buttons']['mutation_add'] = Button(
+            (WINDOW_WIDTH // 5)*3, 450,
+            pygame.image.load('./assets/add_button.png').convert_alpha(),
+            0.7
+        )
+    components['buttons']['mutation_sub'] = Button(
+            (WINDOW_WIDTH // 5)*4, 450,
+            pygame.image.load('./assets/subtract_button.png').convert_alpha(),
+            0.7
+        )
+
     components['buttons']['start'] = Button(
-            WINDOW_WIDTH // 2, 400,
+            WINDOW_WIDTH // 2, 600,
             pygame.image.load('./assets/start_button.png').convert_alpha(),
+            0.7
+        )
+    components['buttons']['back_new_sim'] = Button(
+            WINDOW_WIDTH // 2, 700,
+            pygame.image.load('./assets/back_button.png').convert_alpha(),
             0.7
         )
     # Load Sim Menu UI Components
@@ -83,8 +118,7 @@ def load_ui_components():
             .convert_alpha(),
             0.7
         )
-    # Back button for both new and load sim menu
-    components['buttons']['back'] = Button(
+    components['buttons']['back_load_sim'] = Button(
             WINDOW_WIDTH // 2, 600,
             pygame.image.load('./assets/back_button.png').convert_alpha(),
             0.7
@@ -101,7 +135,7 @@ def load_ui_components():
             [pygame.image.load('./assets/1x_button.png').convert_alpha(),
              pygame.image.load('./assets/2x_button.png').convert_alpha(),
              pygame.image.load('./assets/4x_button.png').convert_alpha(),
-             pygame.image.load('./assets/0x_button.png').convert_alpha()
+             pygame.image.load('./assets/freeze_button.png').convert_alpha()
              ],
             0.7
         )

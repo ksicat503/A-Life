@@ -24,7 +24,8 @@ class Environment:
             weather_freq,
             possible_disasters,
             color,
-            starting_resources=None
+            herb_food,
+            carn_food
             ):
         """
         Initialize environment attributes.
@@ -37,10 +38,8 @@ class Environment:
         self.weather_freq = weather_freq
         self.possible_disasters = possible_disasters
         self.color = color
-        self.total_resources = (starting_resources
-                                if starting_resources is not None
-                                else random.uniform(0.3, 1.0)
-                                )
+        self.herb_food = herb_food
+        self.carn_food = carn_food
         self.disaster_present = None
         self.weather = "clear"
         # Stores organisms in the environment. Allows for 1+ organisms
@@ -75,7 +74,8 @@ class Environment:
     def set_attributes_from_saved_file(self, data):
         """ Updates environment to data from saved file"""
         self.temperature = data['temperature']
-        self.total_resources = data['total_resources']
+        self.herb_food = data['herb_food']
+        self.carn_food = data['carn_food']
         self.disaster_present = data['disaster_present']
         self.weather = data['weather']
 
@@ -89,6 +89,10 @@ class Environment:
         """Uses resources. Makes sure the total amount doesn't go below zero"""
         self.total_resources -= amt
         self.total_resources = max(0, self.total_resources - amt)
+
+    def restore_herb_food(self):
+        if self.herb_food < 50:
+            self.herb_food += 0.1
 
     def spawn_disaster(self):
         """
@@ -123,7 +127,9 @@ class Grassland(Environment):
             ["clear", "rain", "storm"],
             [0.45, 0.4, 0.15],
             ["Drought", "Flood", "Wildfire", "Earthquake"],
-            (124, 192, 64)
+            (124, 192, 64),
+            50,
+            30
         )
 
 
@@ -136,7 +142,9 @@ class Forest(Environment):
             ["clear", "rain", "snow"],
             [0.5, 0.3, 0.2],
             ["Wildfire", "Drought", "Flood", "Earthquake"],
-            (34, 85, 34)
+            (34, 85, 34),
+            50,
+            30
         )
 
     def regenerate_resources(self):
@@ -157,7 +165,9 @@ class Desert(Environment):
             ["clear", "rain"],
             [0.98, 0.02],
             ["Sandstorm", "Earthquake", "Drought"],
-            (237, 201, 175)
+            (237, 201, 175),
+            50,
+            30
         )
 
 
@@ -171,7 +181,9 @@ class Ocean(Environment):
             ["clear"],
             [1.0],
             None,
-            (28, 107, 160)
+            (28, 107, 160),
+            50,
+            30
         )
 
 
@@ -184,7 +196,9 @@ class Tundra(Environment):
             ["clear", "snow", "rain"],
             [0.2, 0.7, 0.1],
             ["Blizzard"],
-            (180, 190, 190)
+            (180, 190, 190),
+            50,
+            30
         )
 
 
@@ -197,5 +211,7 @@ class Swamp(Environment):
             ["clear", "rain"],
             [0.45, .55],
             ["Flood", "Hurricane", "Drought"],
-            (63, 92, 51)
+            (63, 92, 51),
+            50,
+            30
         )

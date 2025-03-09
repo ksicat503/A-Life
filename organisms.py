@@ -4,8 +4,10 @@ from constants import WINDOW_HEIGHT, WINDOW_WIDTH, X_PX_SIZE, Y_PX_SIZE
 
 
 class Organisms:
-    def __init__(self, x_pos, y_pos, animal_type, speed):
+    def __init__(self, name, x_pos, y_pos, animal_type, speed,
+                 mutation_chance):
         # all values below should be adjusted post test simulations
+        self.name = name
         self.x_pos = x_pos
         self.y_pos = y_pos
         self.org_height = Y_PX_SIZE
@@ -16,10 +18,12 @@ class Organisms:
         self.days_since_fed = 0
         self.energy_level = 10
         self.life_expectancy = 50
+        self.mutation_chance = mutation_chance
+        self.child_count = 0
         self.is_alive = True
         self.speed = speed
         self.animal_type = animal_type
-        self.death_type = None  # 1 for eatten and 2 for starved
+        self.death_type = None  # 1 for eatten, 2 for starved, 3 for old age
 
     def __del__(self):
         return
@@ -31,6 +35,10 @@ class Organisms:
         self.energy_level = data['energy_level']
         self.is_alive = data['is_alive']
         self.death_type = data['death_type']
+        self.child_count = data['child_count'],
+        self.life_expectancy = data['life_expectancy']
+        self.speed = data['speed']
+        self.offspring_chance = data['offspring_chance']
 
         return self
 
@@ -95,16 +103,15 @@ class Organisms:
         Mutation can randomly affect organism traits
         *Decide what traits/numbers we want to use
         """
-        mutation_chance = 0.1
 
-        if random.random() < mutation_chance:
-            self.offspring_chance += random.randint(-0.05, 0.05)
+        if random.random() < self.mutation_chance:
+            self.offspring_chance += random.randint(-5, 5) / 1000
             self.offspring_chance = max(0.0, self.offspring_chance)
 
-        if random.random() < mutation_chance:
+        if random.random() < self.mutation_chance:
             self.life_expectancy += random.randint(-3, 3)
             self.life_expectancy = max(1, self.life_expectancy)
 
-        if random.random() < mutation_chance:
+        if random.random() < self.mutation_chance:
             self.speed += random.randint(-2, 2)
             self.speed = max(1, self.speed)
