@@ -318,8 +318,8 @@ class Menu_Handler:
             self.window, f"Maturation Age: {self.organism.maturation_age}")
         self.ui_components['text']['body_1_6'].draw(
             self.window,
-            f"Offspring Chance: {round(
-                self.organism.offspring_chance * 100, 2)}%")
+            "Offspring Chance: " + round(
+                self.organism.offspring_chance * 100, 2) + "%")
         self.ui_components['text']['body_1_7'].draw(
             self.window,
             f"Child Count: {self.organism.child_count}"
