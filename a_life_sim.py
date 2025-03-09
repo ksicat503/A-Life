@@ -95,11 +95,9 @@ while pygame_active:
                     original_pos = (moving_organism.x_pos,
                                     moving_organism.y_pos)
 
-
                     # move the organism
                     moving_organism.move()
                     # determine_movement(moving_organism, grid)
-
 
                     # check for collision, if collided, break and check the
                     # next organism that will be moving
@@ -108,7 +106,6 @@ while pygame_active:
 
                     if did_collide:
                         break
-
 
                 for organism in all_organisms:
                     y, x = organism.y_pos, organism.x_pos

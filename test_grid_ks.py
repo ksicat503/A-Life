@@ -126,7 +126,8 @@ def search_food(carnivore, grid):
         for dy in range(-sense_radius, sense_radius + 1):
             new_x = (carnivore.x_pos + dx) // 20
             new_y = (carnivore.y_pos + dy) // 20
-            # print(f"new_x: {new_x}, new_y: {new_y}, grid size: {len(grid)}x{len(grid[0])}")
+            # print(f"new_x: {new_x}, new_y: {new_y}, 
+            # grid size: {len(grid)}x{len(grid[0])}")
 
             # Stay within grid
             # if 0 <= new_x < len(grid) and 0 <= new_y < len(grid[0]):
