@@ -52,8 +52,8 @@ def get_random_starting_organisms(data):
     all_organisms = []
 
     for _ in range(data['herb_count']):
-        row = random.randint(0, GRID_ROWS) * GRID_S
-        col = random.randint(0, GRID_COLS) * GRID_S
+        row = random.randint(0, GRID_ROWS-1) * GRID_S
+        col = random.randint(0, GRID_COLS-1) * GRID_S
         all_organisms.append(Herbivores(_,
                                         row,
                                         col,
@@ -61,8 +61,8 @@ def get_random_starting_organisms(data):
                                         ))
 
     for _ in range(data['carn_count']):
-        row = random.randint(0, GRID_ROWS) * GRID_S
-        col = random.randint(0, GRID_COLS) * GRID_S
+        row = random.randint(0, GRID_ROWS-1) * GRID_S
+        col = random.randint(0, GRID_COLS-1) * GRID_S
         all_organisms.append(Carnivores(_,
                                         row,
                                         col,
